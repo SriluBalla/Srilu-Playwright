@@ -1,8 +1,8 @@
-import {test, expect, Page } from '@playwright/test';
+import {test, expect, Page, Locator } from '@playwright/test';
 import { SwagLogin } from '../pages/swagLogin';
 import { SwagShop } from '../pages/swagShop';
 import { getImage } from '../helper/getImage';
-import { data } from '../data/env_data';
+import { data } from '../helper/env_data';
 
 test.beforeEach(async ({ page }) => {
 

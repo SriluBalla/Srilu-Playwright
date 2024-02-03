@@ -2,16 +2,21 @@
 Playwright with Typescript
 
 **RUN TESTS**
+
 Run all the tests
+
     npx playwright test
 
 Run test to view the steps (helpful when building tests)
+
     npx playwright test -ui
 
 Run single test
+
     npx playwright test tests/fileName
 
 Run a set of test files
+
     npx playwright test tests/file1 tests/file2
 
 Run tests based on file name

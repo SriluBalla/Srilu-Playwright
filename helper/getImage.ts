@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import { data } from '../data/env_data';
+import { data } from '../helper/env_data';
 
 export class getImage {
 
@@ -17,7 +17,7 @@ export class getImage {
     }
 
     async element(locator: string, fileName: string){
-        await this.page.locator(locator).screenshot({ path:  fileName + '.png'});
+        await this.page.locator(locator).screenshot({ path:  data.pathScreenshot + fileName + '.png'});
 
     }
 }
