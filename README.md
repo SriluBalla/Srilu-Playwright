@@ -10,7 +10,9 @@ If you are using VSCode, running tests and running specific tests can be done fr
 3. Hover over the test ==> buttons for running, debugging display
 4. click on the button and run the specific test as you build them.
 
-**NOTE: the problem user test fails, because I purposefully coded it to fail (it is looking for an error message, which never shows up)**
+**NOTE: the "problem user" test fails, because I purposefully coded it to fail (it is looking for an error message, which never shows up)**
+
+<img width="964" alt="testExplorer" src="https://github.com/SriluBalla/Srilu-Playwright/assets/106475342/8f820274-60b5-44c7-839d-0630fe0bc795">
 
 ______________________________________________
 
