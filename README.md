@@ -1,7 +1,13 @@
 # Srilu-Playwright
 Playwright with Typescript
 
-**RUN TESTS**
+# RUN TESTS from interface
+
+If you are using VSCode, running tests and running specific tests can be done from the interface.
+
+______________________________________________
+
+# RUN tests from terminal - 
 
 Run all the tests
 
@@ -20,30 +26,41 @@ Run a set of test files
     npx playwright test tests/file1 tests/file2
 
 Run tests based on file name
+    
     npx playwright test file1 file2
 
 Run test on a certain line of a file
+    
     npx playwright test file.ts:12
 
 Run test by title
+    
     npx playwright test -g "test title"
 
 Run test by headed browser 
+
 -- chromium (default) firefox webkit 'Mobile Chrome' 'Mobile Safari' 'Microsoft Edge' 'Google Chrome'
+    
     npx playwright test --headed
+
     npx playwright test --project firefox
+
     npx playwright test --project 'Mobile Safari'
 
 Run debug mode with inspector
+
     npx playwright test --debug
 
 Choose Reporter
+
     npx playwright test --reporter=dot
 
 Help
+
     npx playwright test --help
 
 Record steps (lease recomended)
+
     npx playwright codegen   
 
 
