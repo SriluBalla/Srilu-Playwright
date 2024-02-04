@@ -25,20 +25,35 @@ THEN All matching elements will populate, making it easy for anyone on the team 
 AND if no results appear, the member will know to add them.
 
 Button - btnName
+
 Caption - capName
+
 Checkbox - cbName
+
 Drop Down List - ddlName
+
 Error - errName
+
 Field - fName
+
 Heading - hName
+
 Image - ImgName
+
 Logo - logoName
+
 Menu - mName
+
 Navigation Bar - nbName
+
 Page - pName
+
 Radio Button - rbName
+
 Section - secName
+
 Tab - tabName
+
 Text - txtName
 
 **pLogin.fUserName** is easy to understand
