@@ -1,7 +1,8 @@
-# Srilu-Playwright
+# Srilu Balla -Playwright
 Playwright with Typescript
 https://www.youtube.com/watch?v=zUqJTkDihkg 
 
+______________________________________________
 # RUN TESTS from interface
 
 If you are using VSCode, running tests and running specific tests can be done from the interface.
@@ -15,6 +16,32 @@ If you are using VSCode, running tests and running specific tests can be done fr
 
 <img width="964" alt="testExplorer" src="https://github.com/SriluBalla/Srilu-Playwright/assets/106475342/8f820274-60b5-44c7-839d-0630fe0bc795">
 
+______________________________________________
+# Page Object Naming - 
+
+GIVEN I name the page elements based on their type initially
+WHEN I type the first initial
+THEN All matching elements will populate, making it easy for anyone on the team to choose an element 
+AND if no results appear, the member will know to add them.
+
+Button - btnName
+Caption - capName
+Checkbox - cbName
+Drop Down List - ddlName
+Error - errName
+Field - fName
+Heading - hName
+Image - ImgName
+Logo - logoName
+Menu - mName
+Navigation Bar - nbName
+Page - pName
+Radio Button - rbName
+Section - secName
+Tab - tabName
+Text - txtName
+
+**pLogin.fUserName** is easy to understand
 ______________________________________________
 
 # RUN tests from terminal - 
