@@ -1,5 +1,6 @@
 # Srilu-Playwright
 Playwright with Typescript
+https://www.youtube.com/watch?v=zUqJTkDihkg 
 
 # RUN TESTS from interface
 
