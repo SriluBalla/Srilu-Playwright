@@ -117,7 +117,16 @@ Record steps (lease recomended)
 
 
 --------------------------------------
-Installation Instructions
+# Installation Instructions
+
+Download JAVA - https://www.oracle.com/java/technologies/downloads/
+
+Select the version of JDK. Select – Linux / macOS / Windows, Download ARM64 DMG Installer (for Mac), 
+
+Double-click on the download -->  The folder opens with the DMG
+
+Double-click on the PKG -->  Installer starts, Follow the steps and install the package
+
 
 Download VSCode https://code.visualstudio.com/
 
