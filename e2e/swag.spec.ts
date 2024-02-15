@@ -48,7 +48,7 @@ test.describe ('Login with various user types', () => {
     });
 
 
-    test.skip('Problem User --> Just failing a test because I can', async ({page}) => {
+    test.skip('Problem User --> Just failing a test to see it fails', async ({page}) => {
         const p = new allPages(page);
 
         await p.SwagLogin.logo.isVisible;
@@ -66,7 +66,7 @@ test.describe ('Login with various user types', () => {
         await p.img.wholePage('VisualUser');
     });
 
-    test('Standard User --> YAY!! Logged in', async ({page}) => {
+    test('Standard User --> YAY!! Logged in again', async ({page}) => {
         const p = new allPages(page);
 
         await p.SwagLogin.logo.isVisible;

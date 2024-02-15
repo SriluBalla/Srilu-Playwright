@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Playwright with Typescript",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,4 +16,8 @@
   "dependencies": {
     "dotenv": "^16.4.4"
   }
+  
+    
+
+
 }
