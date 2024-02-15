@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 
-export class SwagLogin {
+export class SwagLoginPage {
 
     readonly page: Page;
     readonly logo: Locator;

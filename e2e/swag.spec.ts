@@ -1,7 +1,5 @@
 import {test } from '@playwright/test';
-import { SwagLogin } from '../pages/swagLogin';
-import { SwagShop } from '../pages/swagShop';
-import { getImage } from '../helper/getImage';
+import { allPages } from '../pages/allPages';
 
 test.beforeEach(async ({ page }) => {
 
@@ -11,83 +9,70 @@ test.beforeEach(async ({ page }) => {
 test.describe ('Login with various user types', () => {
  
     test('Empty fields --> Error message', async ({page}) => {
-        const pSwagLogin = new SwagLogin(page);
-        const image = new getImage(page);
+        const p = new allPages(page);
 
-        await pSwagLogin.logo.isVisible;
-        await pSwagLogin.login('', '');
-        await pSwagLogin.wrongUser('Epic sadface: Username is required')
-        await image.wholePage('NoUser');
+        await p.SwagLogin.logo.isVisible;
+        await p.SwagLogin.login('', '');
+        await p.SwagLogin.wrongUser('Epic sadface: Username is required')
+        await p.img.wholePage('NoUser');
     });
 
     test('Error User --> No Error', async ({page}) => {
-        const pSwagLogin = new SwagLogin(page);
-        const pSwagShop = new SwagShop(page);
-        const image = new getImage(page);
+        const p = new allPages(page);
 
-        pSwagLogin.logo.isVisible;
-        await pSwagLogin.login(process.env.user_err!, process.env.password!);
-        await pSwagShop.cart.isVisible;
-        await image.wholePage('ErrUser');
+        await p.SwagLogin.logo.isVisible;
+        await p.SwagLogin.login(process.env.user_err!, process.env.password!);
+        await p.SwagShop.cart.isVisible;
+        await p.img.wholePage('ErrUser');
 
     });
 
 
-    test('Locked Out User --> ', async ({page}) => {
-        const pSwagLogin = new SwagLogin(page);
-        const pSwagShop = new SwagShop(page);
-        const image = new getImage(page);
+    test('Locked Out User --> Cant log in', async ({page}) => {
+        const p = new allPages(page);
 
-        await pSwagLogin.logo.isVisible;
-        await pSwagLogin.login(process.env.user_locked!, process.env.password!);
-        await pSwagLogin.wrongUser('Epic sadface: Sorry, this user has been locked out.')
-        await image.wholePage('LockedUser');
+        await p.SwagLogin.logo.isVisible;
+        await p.SwagLogin.login(process.env.user_locked!, process.env.password!);
+        await p.SwagLogin.wrongUser('Epic sadface: Sorry, this user has been locked out.')
+        await p.img.wholePage('LockedUser');
     });
 
 
-    test('Performance Glitch User --> ', async ({page}) => {
-        const pSwagLogin = new SwagLogin(page);
-        const pSwagShop = new SwagShop(page);
-        const image = new getImage(page);
+    test('Performance Glitch User --> Take a long ass time to log in', async ({page}) => {
+        const p = new allPages(page);
 
-        await pSwagLogin.logo.isVisible;
-        await pSwagLogin.login(process.env.user_glitch!, process.env.password!);
-        await pSwagShop.cart.isVisible;
-        await image.wholePage('GlitchUser');
+        await p.SwagLogin.logo.isVisible;
+        await p.SwagLogin.login(process.env.user_glitch!, process.env.password!);
+        await p.SwagShop.cart.isVisible;
+        await p.img.wholePage('GlitchUser');
     });
 
 
-    test.skip('Problem User --> ', async ({page}) => {
-        const pSwagLogin = new SwagLogin(page);
-        const pSwagShop = new SwagShop(page);
-        const image = new getImage(page);
+    test.skip('Problem User --> Just failing a test because I can', async ({page}) => {
+        const p = new allPages(page);
 
-        await pSwagLogin.logo.isVisible;
-        await pSwagLogin.login(process.env.user_problem!, process.env.password!);
-        await pSwagLogin.wrongUser('Srilu breaking the test')
-        await image.wholePage('ProblemUser');
+        await p.SwagLogin.logo.isVisible;
+        await p.SwagLogin.login(process.env.user_problem!, process.env.password!);
+        await p.SwagLogin.wrongUser('Srilu breaking the test')
+        await p.img.wholePage('ProblemUser');
     });
 
-    test('Visual User --> ', async ({page}) => {
-        const pSwagLogin = new SwagLogin(page);
-        const pSwagShop = new SwagShop(page);
-        const image = new getImage(page);
+    test('Visual User --> I did not see anything unusual', async ({page}) => {
+        const p = new allPages(page);
 
-        await pSwagLogin.logo.isVisible;
-        await pSwagLogin.login(process.env.user_visual!, process.env.password!);
-        await pSwagShop.cart.isVisible;
-        await image.wholePage('VisualUser');
+        await p.SwagLogin.logo.isVisible;
+        await p.SwagLogin.login(process.env.user_visual!, process.env.password!);
+        await p.SwagShop.cart.isVisible;
+        await p.img.wholePage('VisualUser');
     });
 
-    test('Standard User --> Login Successful', async ({page}) => {
-        const pSwagLogin = new SwagLogin(page);
-        const pSwagShop = new SwagShop(page);
-        const image = new getImage(page);
+    test('Standard User --> YAY!! Logged in', async ({page}) => {
+        const p = new allPages(page);
 
-        await pSwagLogin.logo.isVisible;
-        await pSwagLogin.login(process.env.user_standard!, process.env.password!);
-        await pSwagShop.cart.isVisible;
-        await image.wholePage('StandardUser');
+        await p.SwagLogin.logo.isVisible;
+        await p.SwagLogin.login(process.env.user_standard!, process.env.password!);
+        await p.SwagShop.cart.isVisible;
+        await p.img.wholePage('StandardUser');
     });
 
     test('Wrap up ', async ({page}) => {

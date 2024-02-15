@@ -23,6 +23,8 @@ GIVEN I name the page elements based on their type initially
 WHEN I type the first initial
 THEN All matching elements will populate, making it easy for anyone on the team to choose an element 
 AND if no results appear, the member will know to add them.
+WHEN I add every page and helper to allPages.ts
+THEN I can reduce the number of lines to call the pages and helpers.
 
 Button - btnName
 
@@ -56,7 +58,7 @@ Tab - tabName
 
 Text - txtName
 
-**pLogin.fUserName** is easy to understand
+**p.Login.fUserName** is easy to understand
 ______________________________________________
 
 # RUN tests from terminal - 

@@ -1,19 +1,23 @@
 import { type Page } from "@playwright/test";
 
-import { SwagLogin } from '../pages/swagLogin';
-import { SwagShop } from '../pages/swagShop';
+import { SwagLoginPage } from '../pages/swagLogin';
+import { SwagShopPage } from '../pages/swagShop';
 import { getImage } from '../helper/getImage';
-import { data } from '../helper/env_data';
 
 export class allPages {
 
     readonly page: Page;
+    readonly img: getImage;
+    readonly SwagLogin: SwagLoginPage;
+    readonly SwagShop: SwagShopPage;
 
     constructor(page: Page) {
-        
         this.page = page;
-        
+        this.img = new getImage(page);
+        this.SwagLogin = new SwagLoginPage(page);
+        this.SwagShop = new SwagShopPage(page);
     }
+    
 
 
 }
