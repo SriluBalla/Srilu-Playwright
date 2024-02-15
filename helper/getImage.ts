@@ -12,12 +12,12 @@ export class getImage {
     }
 
     async wholePage(fileName: string){
-        await this.page.screenshot({path: data.pathScreenshot + fileName + '.png', fullPage: true});
+        await this.page.screenshot({path: 'test-results/' + fileName + '.png', fullPage: true});
 
     }
 
     async element(locator: string, fileName: string){
-        await this.page.locator(locator).screenshot({ path:  data.pathScreenshot + fileName + '.png'});
+        await this.page.locator(locator).screenshot({ path:  'test-results/' + fileName + '.png'});
 
     }
 }

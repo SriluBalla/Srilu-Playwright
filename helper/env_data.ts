@@ -2,7 +2,7 @@ import { constants } from "buffer";
 
 export class data {
 
-   public static pathScreenshot = '/Users/sriluballa/Documents/AUTOMATION/Srilu-Playwright/run-results/';
+   public static pathScreenshot = 'test-results/';
    public static URL = 'https://www.saucedemo.com/';
    
    public static password = 'secret_sauce' 
