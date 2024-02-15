@@ -3,6 +3,38 @@ Playwright with Typescript
 https://www.youtube.com/watch?v=zUqJTkDihkg 
 
 ______________________________________________
+# Page Object Naming 
+
+        GIVEN I name the page elements based on their type initially
+        WHEN I type the first initial
+        THEN All matching elements will populate, making it easy for anyone on the team to choose an element 
+        AND if no results appear, the member will know to add them.
+        
+        WHEN I add every page and helper to allPages.ts
+        THEN I can reduce the number of lines to call the pages and helpers.
+
+Element  | Element Name
+-------- | -------------
+Button  | btnName
+Caption | capName
+Checkbox | cbName
+Drop Down List | ddlName
+Error | errName
+Field | fName
+Heading | hName
+Image | ImgName
+Logo | logoName
+Menu | mName
+Navigation Bar | nbName
+Page | pName
+Radio Button | rbName
+Section | secName
+Tab | tabName
+Text | txtName
+
+**p.Login.fUserName** is easy to understand
+
+______________________________________________
 # RUN TESTS from interface
 
 If you are using VSCode, running tests and running specific tests can be done from the interface.
@@ -15,50 +47,6 @@ If you are using VSCode, running tests and running specific tests can be done fr
 **NOTE: the "problem user" test fails, because I purposefully coded it to fail (it is looking for an error message, which never shows up)**
 
 <img width="964" alt="testExplorer" src="https://github.com/SriluBalla/Srilu-Playwright/assets/106475342/8f820274-60b5-44c7-839d-0630fe0bc795">
-
-______________________________________________
-# Page Object Naming - 
-
-GIVEN I name the page elements based on their type initially
-WHEN I type the first initial
-THEN All matching elements will populate, making it easy for anyone on the team to choose an element 
-AND if no results appear, the member will know to add them.
-WHEN I add every page and helper to allPages.ts
-THEN I can reduce the number of lines to call the pages and helpers.
-
-Button - btnName
-
-Caption - capName
-
-Checkbox - cbName
-
-Drop Down List - ddlName
-
-Error - errName
-
-Field - fName
-
-Heading - hName
-
-Image - ImgName
-
-Logo - logoName
-
-Menu - mName
-
-Navigation Bar - nbName
-
-Page - pName
-
-Radio Button - rbName
-
-Section - secName
-
-Tab - tabName
-
-Text - txtName
-
-**p.Login.fUserName** is easy to understand
 ______________________________________________
 
 # RUN tests from terminal - 
