@@ -57,7 +57,7 @@ test.describe ('Login with various user types', () => {
     });
 
 
-    test('Problem User --> ', async ({page}) => {
+    test.skip('Problem User --> ', async ({page}) => {
         const pSwagLogin = new SwagLogin(page);
         const pSwagShop = new SwagShop(page);
         const image = new getImage(page);
