@@ -1,6 +1,6 @@
 # Srilu Balla -Playwright
 Playwright with Typescript
-https://www.youtube.com/watch?v=zUqJTkDihkg 
+https://www.youtube.com/watch?v=5WOi-qBoxmo 
 
 ______________________________________________
 # Page Object Naming 
