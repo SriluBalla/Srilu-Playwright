@@ -17,7 +17,4 @@ export class allPages {
         this.SwagLogin = new SwagLoginPage(page);
         this.SwagShop = new SwagShopPage(page);
     }
-    
-
-
 }
