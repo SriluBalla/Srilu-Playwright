@@ -37,16 +37,23 @@ Text | txtName
 ______________________________________________
 # Git Stuff
 
-git status
-git add --all
-git commit -a -m "message"
-git push --set-upstream origin
+    git status
 
-git checkout -b "name"    
-git checkout develop
-git fetch
-git pull
-git merge develop
+    git add --all
+    
+    git commit -a -m "message"
+    
+    git push --set-upstream origin
+
+    git checkout -b "name"    
+    
+    git checkout develop
+    
+    git fetch
+    
+    git pull
+    
+    git merge develop
 
 ______________________________________________
 # RUN TESTS from interface
