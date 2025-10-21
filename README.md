@@ -40,7 +40,7 @@ ______________________________________________
     git status
     git add --all
     git commit -a -m "message"
-    git push --set-upstream origin
+    git push origin main
     
     git checkout -b "name"    
     git checkout develop
