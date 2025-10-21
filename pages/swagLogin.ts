@@ -26,7 +26,9 @@ export class SwagLoginPage {
             await this.btnLogin.click();
         }
 
-        async wrongUser(errorTxt: string | null){
+        async wrongUser(errorTxt: string | RegExp){
+            await expect(this.errLogin).toBeVisible();
+            // await expect(this.errLogin).toHaveText(expected);
             const textError = await this.errLogin.textContent();
             textError === errorTxt;
             expect(textError).toBe(errorTxt);

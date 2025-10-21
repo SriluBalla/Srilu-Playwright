@@ -1,4 +1,6 @@
-import {test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+// ...
+
 import { allPages } from '../pages/allPages';
 
 test.beforeEach(async ({ page }) => {
@@ -11,7 +13,7 @@ test.describe ('Login with various user types', () => {
     test('Empty fields --> Error message', async ({page}) => {
         const p = new allPages(page);
 
-        await p.SwagLogin.logo.isVisible;
+        await p.SwagLogin.logo.isVisible();
         await p.SwagLogin.login('', '');
         await p.SwagLogin.wrongUser('Epic sadface: Username is required')
         await p.img.wholePage('NoUser');

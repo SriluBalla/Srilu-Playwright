@@ -1,102 +1,31 @@
+// playwright.config.ts
 import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv'; // <— works reliably with Playwright's TS loader
 
-dotenv.config({
-  path: './env/.env.qa',
-});
+const ENV = process.env.ENV || 'qa';
+dotenv.config({ path: `./env/.env.${ENV}` });
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
+const isCI = !!process.env.CI;
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
-  // globalSetup: 'utrils/globalSetup.js',
   testDir: './e2e',
-  /* Run tests in files in parallel */
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 0,
+  // workers: isCI ? 1 : undefined,
+    workers: 1,
+
   reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    baseURL: process.env.URL,
+    headless: isCI ? true : false,
+    slowMo: isCI ? 0 : 200,
     trace: 'on-first-retry',
-  
-    // Emulates `'prefers-colors-scheme'` media feature.
     colorScheme: 'dark',
-
-    // Context geolocation.
     geolocation: { longitude: 12.492507, latitude: 41.889938 },
-
-    // Emulates the user locale.
-    // locale: 'en-GB',
-
-    // Grants specified permissions to the browser context.
-    // permissions: ['geolocation'],
-
-    // Emulates the user timezone.
-    // timezoneId: 'Europe/Paris',
-
-    // Viewport used for all pages in the context.
-    // viewport: { width: 1280, height: 720 },
+    permissions: ['geolocation'],
   },
-
-  /* Configure projects for major browsers */
-
-   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    // /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 8'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    // /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
