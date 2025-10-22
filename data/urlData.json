@@ -1,0 +1,23 @@
+
+[
+  {
+    "path": "/",
+    "elementSelector": ".logo",
+    "screenshotName": "HomePage_Logo"
+  },
+  {
+    "path": "/products.html",
+    "elementSelector": "#inventory_container",
+    "screenshotName": "ProductsPage_Inventory"
+  },
+  {
+    "path": "/cart.html",
+    "elementSelector": ".cart_list",
+    "screenshotName": "CartPage_Items"
+  },
+  {
+    "path": "/checkout.html",
+    "elementSelector": ".checkout_info",
+    "screenshotName": "CheckoutPage_Form"
+  }
+]
