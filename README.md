@@ -38,7 +38,7 @@ ______________________________________________
 # Git Stuff
 
     git status
-    git add --all
+    git add .
     git commit -a -m "message"
     git push origin main
     

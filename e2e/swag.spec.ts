@@ -1,10 +1,4 @@
-// swag.spec.ts (Updated)
-
-// 💡 Change the import to use your custom test fixture file
-import { test, expect } from '../helper/fixtures'; // Adjust path as necessary
-
-// NOTE: You no longer need to import 'allPages' here
-// NOTE: You no longer need the explicit 'testInfo' import type
+import { test, expect } from '../helper/fixtures';
 
 test.beforeEach(async ({ page }) => {
     await page.goto(process.env.URL!);
@@ -12,8 +6,6 @@ test.beforeEach(async ({ page }) => {
 
 test.describe ('Login with various user types', () => {
  
-    // The 'p' fixture is now directly available and fully typed!
-    // NO manual passing of testInfo is required.
     test('Empty fields --> Error message', async ({p}) => { 
         // 'p' is the instance of 'allPages'
         await p.SwagLogin.logo.isVisible();
@@ -22,15 +14,12 @@ test.describe ('Login with various user types', () => {
         await p.img.wholePage('NoUser'); // This method uses the attached testInfo
     });
 
-    // Use the 'p' fixture instead of manually creating 'p'
     test('Error User --> No Error', async ({p}) => { 
         p.SwagLogin.logo.isVisible;
         await p.SwagLogin.login(process.env.user_err!, process.env.password!);
         p.SwagShop.cart.isVisible;
         await p.img.wholePage('ErrUser');
     });
-
-    // ... (Apply the {p} signature to all other tests) ...
 
     test('Locked Out User --> Cant log in', async ({p}) => {
         p.SwagLogin.logo.isVisible;
@@ -65,11 +54,6 @@ test.describe ('Login with various user types', () => {
         await p.SwagLogin.login(process.env.user_standard!, process.env.password!);
         p.SwagShop.cart.isVisible;
         await p.img.wholePage('StandardUser');
-    });
-
-    // This test doesn't use 'p', so it can keep its original signature
-    test('Wrap up ', async ({page}) => {
-        await page.close();
     });
 
 });
