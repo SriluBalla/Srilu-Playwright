@@ -74,5 +74,13 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
       },
     },
+    // 4) API tests
+    {
+      name: 'api-tests',
+      testMatch: 'api/**/*.spec.ts',
+      use: {
+        baseURL: 'https://jsonplaceholder.typicode.com', 
+      },
+    },
   ],
 });
