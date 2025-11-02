@@ -37,5 +37,4 @@ export class SwagLoginPage {
             console.log('Message Expected = ' + errorTxt);
         }
 
-
 }
