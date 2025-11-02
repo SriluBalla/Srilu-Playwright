@@ -22,7 +22,6 @@ test.describe('JSONPlaceholder API Tests', () => {
         expect(response.ok()).toBeTruthy();
 
         const posts = await response.json() as Post[];
-
         // Assert: The response is an array and contains multiple items
         expect(Array.isArray(posts)).toBe(true);
         expect(posts.length).toBeGreaterThan(0);
@@ -32,7 +31,6 @@ test.describe('JSONPlaceholder API Tests', () => {
         expect(posts[0]).toHaveProperty('id');
         expect(posts[0]).toHaveProperty('title');
     });
-
 
     // Test 2: POST - Creating a new resource
     test('should successfully create a new post', async ({ request }) => {
@@ -62,7 +60,6 @@ test.describe('JSONPlaceholder API Tests', () => {
         expect(createdPost).toHaveProperty('id');
         expect(createdPost.id).toBe(101); // JSONPlaceholder always returns 101 for POSTs
     });
-
     
     // Test 3: DELETE - Removing a resource
     test('should successfully delete an existing post', async ({ request }) => {

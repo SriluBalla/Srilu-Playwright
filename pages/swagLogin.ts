@@ -17,7 +17,6 @@ export class SwagLoginPage {
             this.fPassword = page.locator('#password');
             this.btnLogin = page.locator('#login-button');
             this.errLogin = page.locator('h3');
-
         }
 
         async login(user: string, pass: string){

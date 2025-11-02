@@ -65,7 +65,7 @@ test.describe("Login with various user types", () => {
     await log("StandardUser");
     p.SwagLogin.logo.isVisible;
     await p.SwagLogin.login(process.env.user_standard!, process.env.password!);
-    p.SwagLogin.logo.isVisible;
+    p.SwagProduct.loadsPageProduct();
     await p.img.wholePage("StandardUser");
   });
 });

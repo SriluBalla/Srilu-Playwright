@@ -29,6 +29,7 @@ const commonUse = {
 };
 
 export default defineConfig({
+  globalSetup: require.resolve('./helper/globalSetup'), // Ping Test
   testDir: "./e2e",
   fullyParallel: true,
   forbidOnly: isCI,
