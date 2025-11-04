@@ -1,15 +1,22 @@
-// playwright.config.ts
 import { defineConfig, devices } from "@playwright/test";
 import * as dotenv from "dotenv";
-import * as path from "path";
-import fs from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import * as fs from "fs"; // Changed to import * as fs to be compatible with ESM
+
+// --- ES Module Fix for __dirname and __filename ---
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+// ---------------------------------------------------
 
 const ENV = process.env.ENV || "qa";
-dotenv.config({ path: `./env/.env.${ENV}` });
+// Use join with __dirname to resolve the environment file path reliably
+dotenv.config({ path: join(__dirname, `env/.env.${ENV}`) });
 
 const isCI = !!process.env.CI;
-const authDir = path.join(__dirname, ".auth");
-const authFile = path.join(authDir, "user.json");
+// Use join with the defined __dirname for reliable path construction
+const authDir = join(__dirname, ".auth");
+const authFile = join(authDir, "user.json");
 
 // Ensure the .auth directory exists
 if (!fs.existsSync(authDir)) {
@@ -20,17 +27,20 @@ const commonUse = {
   viewport: null,
   baseURL: process.env.URL,
   headless: isCI,
-  slowMo: isCI ? 0 : 200,
+  slowMo: isCI ? 0 : 50, // Reduced slowMo for better performance, added 50 as default
   trace: "on-first-retry" as const,
   colorScheme: "dark" as const,
   geolocation: { longitude: 12.492507, latitude: 41.889938 },
   permissions: ["geolocation"] as const,
-  launchOptions: { slowMo: 50 },
 };
 
 export default defineConfig({
-  globalSetup: require.resolve('./helper/globalSetup'), // Ping Test
-  testDir: "./e2e",
+  // FIX: Replaced require.resolve() with join(__dirname, '...')
+  globalSetup: join(__dirname, "./helper/globalSetup"), // Ping Test
+
+  // Set root testDir to the project root, letting individual projects define their sub-dirs.
+  // This is cleaner when mixing e2e, api, and unit-tests.
+  testDir: "./",
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
@@ -42,6 +52,18 @@ export default defineConfig({
   },
 
   projects: [
+    // 0) Unit Tests Project
+    {
+      name: "unit-tests",
+      testDir: "./unit-tests",
+      // Unit tests run independently, reducing the workers limit to 1 worker for the project is a good practice
+      workers: 1,
+      use: {
+        browserName: "chromium",
+        baseURL: undefined,
+        headless: true,
+      },
+    },
     // 1) Setup project — logs in and saves authFile
     {
       name: "setup",
@@ -49,7 +71,6 @@ export default defineConfig({
       testMatch: ["global.auth.setup.spec.ts"],
       use: {
         ...commonUse,
-        // storageState: authFile, // setup test will write to this file
         ...devices["Desktop Chrome"],
       },
     },
@@ -57,7 +78,9 @@ export default defineConfig({
     // 2) Authenticated tests — reuse saved storage state
     {
       name: "authenticated",
-      testMatch: "e2e/auth/**/*.spec.ts",
+      testDir: "./e2e",
+      testMatch: "/auth/**/*.spec.ts",
+      testIgnore: ['./unit-tests/**', './helper/globalSetup.ts'],
       dependencies: ["setup"],
       use: {
         ...commonUse,
@@ -69,7 +92,9 @@ export default defineConfig({
     // 3) Unauthenticated tests
     {
       name: "unauthenticated",
-      testMatch: "e2e/unauth/**/*.spec.ts",
+      testDir: "./e2e",
+      testMatch: "/unauth/**/*.spec.ts",
+      testIgnore: ['./unit-tests/**', './helper/globalSetup.ts'],
       use: {
         ...commonUse,
         ...devices["Desktop Chrome"],
@@ -77,10 +102,13 @@ export default defineConfig({
     },
     // 4) API tests
     {
-      name: 'api-tests',
-      testMatch: 'api/**/*.spec.ts',
+      name: "api-tests",
+      // Explicitly set the test directory for the API project
+      testDir: "./e2e/api",
+      testMatch: "*.spec.ts",
       use: {
-        baseURL: 'https://jsonplaceholder.typicode.com', 
+        // We still need commonUse for the baseURL override, but we don't need UI-specific commonUse fields like geolocation.
+        baseURL: "https://jsonplaceholder.typicode.com",
       },
     },
   ],

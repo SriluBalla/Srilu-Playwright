@@ -1,5 +1,5 @@
-// All Pages Data Functions
-import { type Page, type TestInfo } from "@playwright/test"; // <-- Import TestInfo
+// pages/allPages
+import { type Page, type TestInfo } from "@playwright/test"; 
 
 import { getImage } from "../helper/getImage";
 import { BrowserActions } from "../pages/browser";

@@ -65,13 +65,21 @@ ______________________________________________
 
 # RUN tests from terminal - 
 
-Run all the tests
+Run Tests
 
-    npx playwright test
+    test:e2e
+    test:auth
+    test:unauth
+    test:api
+    test:unit
+    test:all
 
-Run test to view the steps (helpful when building tests)
 
-    npx playwright test -ui
+    npx playwright test --project authenticated 
+    npx playwright test --project unauthenticated
+    npx playwright test --project api-tests
+    npx playwright test e2e/auth/product.spec.ts --project authenticated
+    npx playwright test --project unit-tests
 
 --------------------------------------
 # Installation Instructions

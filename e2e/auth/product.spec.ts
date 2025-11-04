@@ -1,6 +1,5 @@
 import { test, expect } from "../../helper/fixtures";
-import productsData from "../../data/products.json";
-
+import productsData from "../../data/products.json" assert { type: "json" };
 
 test.describe("Product Page", () => {
   test("Go to product page => Title and price match", async ({
