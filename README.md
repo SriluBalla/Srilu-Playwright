@@ -67,19 +67,17 @@ ______________________________________________
 
 Run Tests
 
-    test:e2e
-    test:auth
-    test:unauth
-    test:api
-    test:unit
-    test:all
+    npm run test:e2e
+    npm run test:auth
+    npm run test:unauth
+    npm run test:api
+    npm run test:unit
 
 
     npx playwright test --project authenticated 
     npx playwright test --project unauthenticated
     npx playwright test --project api-tests
     npx playwright test e2e/auth/product.spec.ts --project authenticated
-    npx playwright test --project unit-tests
 
 --------------------------------------
 # Installation Instructions

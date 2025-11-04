@@ -16,7 +16,7 @@ const expectedFolders = [
   'env', 
   'helper',
   'pages', 
-  'unit-', 
+  'unit-tests', 
 ];
 
 const expectedFiles = [
@@ -24,7 +24,7 @@ const expectedFiles = [
   'package-lock.json',
   'playwright.config.ts',
   'README.md',
-  'tsconfig.json' // Added based on your structure
+  'tsconfig.json' 
 ];
 
 describe('🧪 Automation Suite Folder Structure Integrity', () => {

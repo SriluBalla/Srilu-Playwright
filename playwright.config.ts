@@ -56,7 +56,7 @@ export default defineConfig({
     {
       name: "unit-tests",
       testDir: "./unit-tests",
-      // Unit tests run independently, reducing the workers limit to 1 worker for the project is a good practice
+      testMatch: "/**/*.test.ts",
       workers: 1,
       use: {
         browserName: "chromium",
