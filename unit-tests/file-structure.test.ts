@@ -16,7 +16,7 @@ const expectedFolders = [
   'env', 
   'helper',
   'pages', 
-  'unit-tests', 
+  'unit-', 
 ];
 
 const expectedFiles = [
