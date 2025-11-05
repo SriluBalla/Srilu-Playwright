@@ -1,0 +1,78 @@
+// unit-tests/naming-convention.test.ts
+import { describe, test, expect } from 'vitest';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// --- Configuration --- The accepted prefixes go here
+const validPrefixes = [
+    'btn', 'cap', 'cb', 'ddl', 'err', 'f', 'h', 'i', 'img', 
+    'logo', 'm', 'nb', 'page', 'rb', 'sec', 'tab', 'txt'
+];
+
+// 🎯 Excluded files
+const excludedFiles = [
+    'allPages.ts', 
+    'browser.ts',
+    // ADD YOUR EXCLUDED PAGE/HELPER FILENAMES HERE LATER (e.g., 'BasePage.ts', 'PageFactory.ts')
+];
+
+// All valid prefixes into a single Regular Expression pattern 
+const prefixPattern = `^(${validPrefixes.join('|')})[A-Z]`;
+const namingRegex = new RegExp(prefixPattern);
+
+// Root and the target directory paths
+const projectRoot = path.resolve(__dirname, '..');
+const pagesDir = path.join(projectRoot, 'pages');
+
+// 🎯 READ ALL PAGE FILES
+const pageObjectFiles = fs
+    .readdirSync(pagesDir)
+    .filter(file => file.endsWith('.ts'))
+    .filter(file => !excludedFiles.includes(file)); // ⬅️ Apply the exclusion filter here!
+
+// --- Helper to extract class properties from a file's content 
+const getElementNames = (fileContent: string): string[] => {
+
+    const propertyRegex = /(public|private|protected|readonly)\s+([\w$]+)\s*[:=]/g;
+    const matches = [...fileContent.matchAll(propertyRegex)];
+    
+    return matches.map(match => match[2]).filter(name => 
+        !['constructor', 'page'].includes(name) 
+    );
+};
+// -------------------------------------------------------------------
+
+describe('📝 Page Object Naming Convention Enforcement (All Pages)', () => {
+
+    // Ensure we actually found files to test before proceeding
+    if (pageObjectFiles.length === 0) {
+        test.skip('No Page Object files found to test after exclusions.', () => {});
+    }
+    
+    // Use test.each to run the same check against every file found in the 'pages' directory
+    test.each(pageObjectFiles)('should enforce prefixes for all elements in %s', (fileName) => {
+        const filePath = path.join(pagesDir, fileName);
+
+        // 1. Read the file content
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        
+        // 2. Get the list of element names (properties)
+        const elementNames = getElementNames(fileContent);
+
+        // 3. Validate every element name
+        const failures: string[] = [];
+        elementNames.forEach(name => {
+            if (!namingRegex.test(name)) {
+                failures.push(name);
+            }
+        });
+
+        // 4. Assert the result
+        expect(failures.length, 
+            `\n\n--- Naming Convention Failures in ${fileName} ---\n` +
+            `The following properties do not start with a required prefix (${validPrefixes.join(', ')}):` +
+            `\n${failures.map(f => `  - ${f}`).join('\n')}\n`
+        ).toBe(0);
+    });
+
+});

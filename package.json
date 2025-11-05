@@ -5,7 +5,7 @@
   "description": "Playwright with Typescript",
   "main": "index.js",
   "scripts": {
-    "test:e2e": "playwright test --project authenticated --project unauthenticated --project api-tests",
+    "test:e2e": "playwright test --project authenticated --project unauthenticated",
     "test:auth": "playwright test --project authenticated",
     "test:unauth": "playwright test --project unauthenticated",
     "test:api": "playwright test --project api-tests",

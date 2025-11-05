@@ -1,3 +1,4 @@
+// helper/fixturees.ts
 import { test as base, expect, type TestInfo } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { allPages } from '../pages/allPages';
