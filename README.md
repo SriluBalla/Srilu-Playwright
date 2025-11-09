@@ -215,4 +215,68 @@ Direct Playwright
 
 
 
-                --------- THE END ---------
+## 🗂️ Project Structure
+
+Here’s an overview of the folder and file organization for this project:
+
+        ├── 📁 data
+        │ └── products.json
+        ├── 📁 e2e
+        │ ├── 📁 api
+        │ │ └── jsonplaceholder.spec.ts
+        │ ├── 📁 auth
+        │ │ └── product.spec.ts
+        │ └── 📁 unauth
+        │ └── userRoles.spec.ts
+        ├── 📁 env
+        │ └── .env.qa
+        │ └── .env.dev
+        ├── 📁 helper
+        │ ├── dbconnect.ts
+        │ ├── fixtures.ts
+        │ ├── getFileStructure.ts
+        │ ├── getImage.ts
+        │ ├── global.auth.setup.spec.ts
+        │ ├── globalSetup.ts
+        │ ├── networkDiscovery.ts
+        │ └── serverHealth.ts
+        ├── 📁 pages
+        │ ├── allPages.ts
+        │ ├── browser.ts
+        │ ├── swagHome.ts
+        │ ├── swagLogin.ts
+        │ ├── swagProduct.ts
+        │ └── swagShop.ts
+        ├── 📁 playwright-report
+        ├── 📁 test-results
+        ├── 📁 unit-tests
+        │ ├── allpages.test.ts
+        │ ├── e2e.test.ts
+        │ ├── filestructure.test.ts
+        │ ├── fixtures.test.ts
+        │ ├── globalauth.test.ts
+        │ ├── pageobjectname.test.ts
+        │ └── playwrightconfig.test.ts
+        ├── 📄 README.md
+        ├── 📄 generate-structure-log.js
+        ├── 📄 package-lock.json
+        ├── 📄 package.json
+        ├── 📄 playwright.config.ts
+        ├── 📄 tsconfig.json
+        ├── 📄 vitest.config.ts
+        └── 📄 vitest.setup.js
+
+
+### 📌 Notes
+
+- **`data/`** – Contains static data files such as `products.json`.  
+- **`e2e/`** – End-to-end test specifications, organized by test type: `api`, `auth`, and `unauth`.  
+- **`env/`** – Environment variable files for different environments.  
+- **`helper/`** – Helper scripts and global setups for authentication, DB connection, and network/server checks.  
+- **`pages/`** – Page Object Models (POMs) used by tests.  
+- **`playwright-report/`** – Generated HTML test reports.  
+- **`test-results/`** – Raw test outputs and error contexts.  
+- **`unit-tests/`** – Unit tests validating framework integrity, POMs, file structures, and naming conventions.  
+- **`vitest.*`** – Configuration and setup for Vitest unit testing.  
+
+> 💡 **Tip:** Keeping a clean folder structure makes it easier to maintain tests, locate files, and onboard new contributors quickly.
