@@ -42,7 +42,7 @@ test.describe("Login with various user types", () => {
     await p.img.wholePage("GlitchUser");
   });
 
-  test.skip("Problem User --> Just failing a test to see it fails", async ({
+  test("Problem User --> Just failing a test to see it fails", async ({
     p,
     log,
   }) => {
