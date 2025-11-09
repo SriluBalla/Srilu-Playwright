@@ -7,7 +7,7 @@ export class SwagLoginPage {
     readonly fUserName: Locator;
     readonly fPassword: Locator;
     readonly btnLogin: Locator;
-    readonly errLogin: Locator;
+    readonly errLoginMsg: Locator;
 
         constructor(page: Page) {
         
@@ -16,7 +16,8 @@ export class SwagLoginPage {
             this.fUserName = page.locator('#user-name');
             this.fPassword = page.locator('#password');
             this.btnLogin = page.locator('#login-button');
-            this.errLogin = page.locator('h3');
+            this.errLoginMsg = page.locator('h3');
+
         }
 
         async login(user: string, pass: string){
@@ -26,9 +27,8 @@ export class SwagLoginPage {
         }
 
         async wrongUser(errorTxt: string | RegExp){
-            await expect(this.errLogin).toBeVisible();
-            // await expect(this.errLogin).toHaveText(expected);
-            const textError = await this.errLogin.textContent();
+            await expect(this.errLoginMsg).toBeVisible();
+            const textError = await this.errLoginMsg.textContent();
             textError === errorTxt;
             expect(textError).toBe(errorTxt);
 

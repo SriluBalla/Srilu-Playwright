@@ -1,92 +1,218 @@
 # 🛡️ Srilu-Playwright E2E
 
-Welcome to the Srilu-Playwright automation repository that handles
-*  Authenticated scenarios with (browser context) 
-*  Unauthenticated scenarios 
-* Ping checks to ensure system health
-*  API testing - Dedicated API testing
-*  Vitest with unit tests on the framework's core files.
+### 🧭 Automation Framework Setup & Contribution Guide
+This guide is designed to help you **quickly set up, understand, and contribute** to the automation framework.
 
-### ⚙️ Prerequisites & Setup
+---
 
-1.  Node.js: Ensure you have Node.js (v18+) installed.
-2. Dependencies: Install all project dependencies.
+## 🚀 Getting Started
+To get the project running and review existing tests:
+
+1. **📦 Acquisition**  
+   Download the repository as a **zipped file** *(do not clone via Git)*.
+
+2. **⚙️ Installation**  
+   Install dependencies and Playwright browsers: 
+
+   ```
+   npm install
+   ```
+
+3. ▶️ Initial Run
+  - Execute the full end-to-end suite:
+
+        
+        npm run test:e2e
+        The current tests demonstrate interaction with public sites like Sauce Labs.
+        
+
+4. 🧾 Review Reports
+- Examine the generated Playwright Report (playwright-report/) to understand flow and results.
+
+## ⚙️ Core Configuration
+
+Before writing new tests, replace placeholder settings with your application’s details.
+
+| **Area**                     | **File / Path**                    | **Action Required**                                                     |
+| :--------------------------- | :--------------------------------- | :---------------------------------------------------------------------- |
+| 🌍 **Environment Variables** | `env/.env.{ENV}`                   | Update all application URLs, API endpoints, and credentials.            |
+| 🔐 **Authentication Setup**  | `helper/global.auth.setup.spec.ts` | Modify URLs and locator IDs to match your login flow.                   |
+| ❤️ **Health Check URLs**     | `helper/globalSetup.ts`            | Update base URLs and specific health check endpoints.                   |
+| 🗄️ **Database Integration** | `helper/dbconnect.ts`              | Edit connection parameters and credentials if DB interaction is needed. |
+
+## 🧱 Framework Principles (Fixtures & Structure)
+
+Understanding these principles ensures efficient, consistent, and scalable test creation.
+
+## 🗂️ Page Object Manager — pages/allPages.ts
+
+Acts as the central hub for all Page Object Models (POMs).
+
+Every new POM must be instantiated and exported here.
+
+        // pages/allPages.ts
+        import { LoginPage } from './Login.page';
+        import { HomePage } from './Home.page';
+
+        export const allPages = {
+        Login: new LoginPage(),
+        Home: new HomePage(),
+        };
+
+## 🔧 Fixtures — baseTest.ts
+
+### ⚠️ Do not modify this file.
+
+Automatically injects the allPages manager, eliminating redundant imports in spec files.
+
+Provides immediate access to all POMs and utility classes.
+
+        // baseTest.ts
+        import { test as base } from '@playwright/test';
+        import { allPages } from '../pages/allPages';
+
+        export const test = base.extend({
+        p: async ({ page }, use) => {
+        await use(allPages);
+        },
+        });
+
+        export { expect } from '@playwright/test';
+
+## 🧩 Locator Naming Convention
+
+Strictly adhere to prefixes defined in LOCATOR_NAMING_CONVENTION.md
+.
+Ensures clarity, uniformity, and fast troubleshooting across POMs.
+
+        // Example locator naming
+        this.btnSubmit = page.getByRole('button', { name: 'Submit' });
+        this.fUsername = page.getByTestId('username');
+        this.errInvalidLogin = page.getByText('Invalid credentials');
+
+### ✅ Maintenance & Quality Control
+
+To maintain long-term stability, readability, and quality, unit tests exist within /test.
+
+| **Area**                       | **Purpose**                                            | **Example Path**                    |
+| :----------------------------- | :----------------------------------------------------- | :---------------------------------- |
+| 🧩 **POM Review**              | Enforces locator naming and structure                  | `/unit-test/pageobjectname.test.ts` |
+| 📁 **File Structure Tracking** | Ensures required files are present and correctly named | `/unit-test/filestructure.test.ts`  |
+
+## 🧼 Best Practices
+
+ - ✅ Follow naming conventions consistently
+ - ✅ Run unit tests before committing code
+ - ✅ Keep POMs modular and readable
+ - ✅ Avoid modifying shared fixtures
+ - ✅ Review Playwright reports regularly
+
+# ❓ What Does This Project Cover ?
+
+* 🔐 Authenticated scenarios (browser context)
+* 🪪 Unauthenticated scenarios
+* 🩺 Ping / Health checks
+* 🔗 API testing
+* 🧪 Vitest unit tests for core files
+
+## ⚙️ Prerequisites & Setup
+
+1. 📦 Node.js — Ensure v18+ is installed.
+2. 📚 Dependencies
 
         npm install
 
-3. Environment Variables: Create an env/.env.[ENV] file (e.g., env/.env.qa) based on the environment you are targeting. This file must define URL, user_standard, and password.
-4. Authentication Setup (Mandatory First Run). This creates the .auth/user.json file
+3. 🌍 Environment Variables — Create env/.env.[ENV] (e.g., env/.env.qa) with URL, user_standard, and password.
+4. 🔐 Authentication Setup (first run)
 
         npx playwright test --project=setup
 
-## 🚀 Running End-to-End (E2E) Tests
+### 🚀 Running Tests
 
-    npm run test:e2e
-    npm run test:auth
-    npm run test:unauth
-    npm run test:api
-    npm run test:unit
-OR
+NPM scripts
 
-    npx playwright test --project authenticated 
-    npx playwright test --project unauthenticated
-    npx playwright test --project api-tests
-    npx playwright test e2e/auth/product.spec.ts --project authenticated
-______________________________________________
-### 💎 Page Object Naming Protocol (Crucial for IntelliSense)
-We use a standard naming prefix for all Page Object Model (POM) elements. This ensures IntelliSense guides users immediately to the correct element type, making test writing fast and reliable.
-
-Element  | Naming Prefix | Element Name
--------- | ------------- | -------------
-Button  | btn | p.Login.btnSubmit
-Caption | cap | p.Home.capWelcome
-Checkbox | cb | p.Settings.cbRememberMe
-Drop Down List | ddl | p.Shop.ddlSortBy
-Error | err | p.Login.errInvalidCredentials
-Field | f | p.Login.fUserName 
-Heading | h | p.Home.hMainTitle
-Image | img | p.Home.imgHero
-Logo | logo | p.Header.logoSite
-Menu | m | p.Header.mUser
-Navigation Bar | nb | p.Header.nbMainMenu
-Radio Button | r | p.Settings.rbOptionOne
-Section | sec | p.Shop.secProductList
-Tab | tab | p.Profile.tabOrders
-Text | txt | p.Product.txtName
+        npm run test:e2e
+        npm run test:auth
+        npm run test:unauth
+        npm run test:api
+        npm run test:unit
 
 
+Direct Playwright
 
-        GIVEN I name the page elements based on the element type
-        WHEN I type the first initial
-        THEN IntelliSense populates matching elements, making it easy for the user to choose an element 
-        AND if no results appear, the member will know to add them.
-        
-        WHEN I add every page and helper to allPages.ts
-        THEN I can reduce the number of lines to call the pages and helpers.
-______________________________________________
+        npx playwright test --project authenticated
+        npx playwright test --project unauthenticated
+        npx playwright test --project api-tests
+        npx playwright test e2e/auth/product.spec.ts --project authenticated
 
-### Protocols to follow 
-* Get familiar with tests in unit-tests
-* all-pages = ensures all the page object files are accounted for in the allPages.ts with some exceptions
-* e2e = ensures none of the test files have unintended code
-* filestructure = files added, renamed, deleted should be updated in the order they show up on the file structure
-* fixtures = ensures fixtures file is not disturbed at all
-* globalauth = ensures global.auth.setup has not been disturbed with the exception to IDs and variable values
-* page-object-naming = read the file to understand the page object naming convention. Follow it to the T. add more element types if need arises
-* playwright = the config file needs to be not touched with exepction to some variables like env changes and such.
-_____________________________________________
+###  💎 Page Object Naming Protocol (Crucial for IntelliSense)
+🎯 Locator Naming Convention (Alphabetical)
 
-### Git Stuff
-In case you hate memorizing the git commands. Here you go
+| **Element Name** | **Prefix** | **Example**               | **Description**                   |
+| :--------------- | :--------: | :------------------------ | :-------------------------------- |
+| Button           |    `btn`   | `p.Login.btnSubmit`       | Triggers an action                |
+| Caption          |    `cap`   | `p.Home.capWelcome`       | Descriptive text / subtitle       |
+| Checkbox         |    `cb`    | `p.Settings.cbRememberMe` | Two-state toggle                  |
+| Dropdown List    |    `ddl`   | `p.Shop.ddlSortBy`        | Select element or custom dropdown |
+| Error            |    `err`   | `p.Login.errBadLogin1`    | Inline error message              |
+| Field (Input)    |     `f`    | `p.Login.fUserName`       | Text input field                  |
+| Heading          |     `h`    | `p.Home.hMainTitle`       | Structural heading                |
+| Icon             |     `i`    | `p.Header.iCart`          | Small graphic (SVG, Font Awesome) |
+| Image            |    `img`   | `p.Home.imgHero`          | Primary image                     |
+| Link             |    `lnk`   | `p.Footer.lnkPrivacy`     | Anchor tag for navigation         |
+| Logo             |   `logo`   | `p.Header.logoSite`       | Main logo image/link              |
+| Menu             |     `m`    | `p.Header.mProfile`       | Menu container                    |
+| Navigation       |    `nav`   | `p.Header.navPrimary`     | Navigation wrapper                |
+| Navbar           |    `nb`    | `p.Header.nbHome`         | Top horizontal bar                |
+| Pagination       |    `pgn`   | `p.Shop.pgnControls`      | Page number controls              |
+| Progress Bar     |   `pbar`   | `p.Upload.pbarStatus`     | Loader / progress indicator       |
+| Radio Button     |    `rb`    | `p.Settings.rbOptionOne`  | Single choice radio               |
+| Snack Bar        |   `sbar`   | `p.App.sbarSuccess`       | Toast notification                |
+| Section          |    `sec`   | `p.Shop.secProductList`   | Logical content area              |
+| Submenu          |    `sm`    | `p.Header.smAccount`      | Nested menu                       |
+| Tab              |    `tab`   | `p.Profile.tabOrders`     | View switch tab                   |
+| Table            |    `tbl`   | `p.Admin.tblUsers`        | Structured data table             |
+| Text             |    `txt`   | `p.Product.txtName`       | Static read-only text             |
 
-    git status
-    git add .
-    git commit -a -m "message"
-    git push origin main
-    
-    git checkout -b "name"    
-    git checkout develop
-    git fetch
-    git pull
-    git merge develop
+        // Login.page.ts
+        export class LoginPage {
+        constructor(private page: import('@playwright/test').Page) {}
+        fUserName = this.page.getByTestId('login-username');
+        fPassword = this.page.getByTestId('login-password');
+        btnSubmit = this.page.getByRole('button', { name: 'Sign In' });
+        errBadLogin1 = this.page.getByText('Invalid username or password.');
+
+
+### 📏 Protocols to Follow
+
+* 🧩 unit-tests — review tests in unit-tests
+* 🗂️ all-pages — verify all POM files are listed in allPages.ts
+* 🧪 e2e — check for unintended code in spec files
+* 🗃️ filestructure — reflect added/renamed/deleted files properly
+* 🛡️ fixtures — ensure fixture files remain untouched
+* 🔐 globalauth — only IDs/variables may change in global.auth.setup
+* 🏷️ page-object-naming — follow prefix rules to the T
+* ⚙️ playwright — edit config only for env variables
+
+# 🌿 Git Quick Reference
+
+        tree -L5 -I 'node_modules|dist|build|.git'
+
+        git status
+        git add .
+        git commit -a -m "message"
+        git push origin main
+
+        git checkout -b "feature/name"
+        git checkout develop
+        git fetch
+        git pull
+        git merge develop
+
+
+
+
+
+
+
 
