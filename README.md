@@ -8,26 +8,33 @@ This guide is designed to help you **quickly set up, understand, and contribute*
 ## 🚀 Getting Started
 To get the project running and review existing tests:
 
-1. **📦 Acquisition**  
+1. **🧩 Prerequisites**
+
+   Before installing dependencies, verify that **Node.js** and **npm** are correctly installed on your system:
+
+2. **📦 Acquisition**  
    Download the repository as a **zipped file** *(do not clone via Git)*.
 
-2. **⚙️ Installation**  
+3. **⚙️ Installation**  
    Install dependencies and Playwright browsers: 
 
    ```
    npm install
    ```
 
-3. ▶️ Initial Run
-  - Execute the full end-to-end suite:
+4. ▶️ Initial Run
+  
+     Execute the full end-to-end suite:
 
         
         npm run test:e2e
         The current tests demonstrate interaction with public sites like Sauce Labs.
         
 
-4. 🧾 Review Reports
-- Examine the generated Playwright Report (playwright-report/) to understand flow and results.
+5. 🧾 Review Reports
+
+    Examine the generated Playwright Report (playwright-report/) to understand flow and results.
+
 
 ## ⚙️ Core Configuration
 
@@ -59,13 +66,10 @@ Every new POM must be instantiated and exported here.
         Home: new HomePage(),
         };
 
-## 🔧 Fixtures — baseTest.ts
+## 🔧 Fixtures — baseTest.ts - ⚠️ Do not modify this file.
 
-### ⚠️ Do not modify this file.
-
-Automatically injects the allPages manager, eliminating redundant imports in spec files.
-
-Provides immediate access to all POMs and utility classes.
+      Automatically injects the allPages manager, eliminating redundant imports in spec files.
+      Provides immediate access to all POMs and utility classes.
 
         // baseTest.ts
         import { test as base } from '@playwright/test';
@@ -211,8 +215,4 @@ Direct Playwright
 
 
 
-
-
-
-
-
+                --------- THE END ---------
