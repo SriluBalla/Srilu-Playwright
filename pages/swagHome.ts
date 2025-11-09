@@ -10,5 +10,4 @@ export class SwagHomePage {
     this.iCart = page.getByTestId(".shopping-cart-link");
     
   }
-
 }
