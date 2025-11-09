@@ -41,6 +41,11 @@ export default defineConfig({
   // Set root testDir to the project root, letting individual projects define their sub-dirs.
   // This is cleaner when mixing e2e, api, and unit-tests.
   testDir: "./",
+  
+  // FIX: Ignore the unit-tests directory globally to prevent Vitest/Jest matchers conflict
+  // when running generic 'playwright test' without specifying projects.
+  testIgnore: ["**/unit-tests/**"],
+
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
@@ -52,8 +57,7 @@ export default defineConfig({
   },
 
   projects: [
-    // 0) Unit Tests Project - RE-ADDED. This project defines the path/config for unit tests.
-    // It is deliberately NOT included in the 'test:e2e' script to prevent the matchers conflict.
+    // 0) Unit Tests Project - Defines path/config for unit tests (run via 'npm run test:unit')
     {
       name: "unit-tests",
       testDir: "./unit-tests",
