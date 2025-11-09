@@ -1,3 +1,4 @@
+## .github / workflows /playwright.yml
 name: Playwright Tests
 on:
   push:
@@ -13,13 +14,13 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 18
-    - name: Install dependencies
+    - name: Install dependencies (Includes Playwright browser install via npm ci + postinstall)
       run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+    # Removed the redundant 'Install Playwright Browsers' step because 'npm ci' now handles it.
     - name: Run Playwright tests
       run: npx playwright test
-    - uses: actions/upload-artifact@v3
+    - name: Upload Playwright Report
+      uses: actions/upload-artifact@v4 # FIX: Updated from v3 to v4
       if: always()
       with:
         name: playwright-report
