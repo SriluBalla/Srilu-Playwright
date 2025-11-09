@@ -52,7 +52,8 @@ export default defineConfig({
   },
 
   projects: [
-    // 0) Unit Tests Project
+    // 0) Unit Tests Project - RE-ADDED. This project defines the path/config for unit tests.
+    // It is deliberately NOT included in the 'test:e2e' script to prevent the matchers conflict.
     {
       name: "unit-tests",
       testDir: "./unit-tests",
@@ -64,6 +65,7 @@ export default defineConfig({
         headless: true,
       },
     },
+    
     // 1) Setup project — logs in and saves authFile
     {
       name: "setup",
