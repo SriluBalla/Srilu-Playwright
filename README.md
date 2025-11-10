@@ -1,5 +1,23 @@
 # 🛡️ Srilu-Playwright E2E
 
+
+[🚀 Getting Started](https://github.com/SriluBalla/Srilu-Playwright?tab=readme-ov-file#%EF%B8%8F-srilu-playwright-e2e)
+
+[⚙️ Core Configuration](https://github.com/SriluBalla/Srilu-Playwright?tab=readme-ov-file#%EF%B8%8F-core-configuration)
+
+[🧱 Framework Principles](https://github.com/SriluBalla/Srilu-Playwright?tab=readme-ov-file#-framework-principles-fixtures--structure)
+
+[❓ What Does This Project Cover](https://github.com/SriluBalla/Srilu-Playwright?tab=readme-ov-file#-what-does-this-project-cover-)
+
+[🚀 Running Tests](https://github.com/SriluBalla/Srilu-Playwright?tab=readme-ov-file#-running-tests)
+
+[💎 Page Object Naming Protocol](https://github.com/SriluBalla/Srilu-Playwright?tab=readme-ov-file#-page-object-naming-protocol-crucial-for-intellisense)
+
+[🌿 Git Quick Reference](https://github.com/SriluBalla/Srilu-Playwright#Git-Quick-Reference)
+
+[🗂️ Project Structure](https://github.com/SriluBalla/Srilu-Playwright?tab=readme-ov-file#%EF%B8%8F-project-structure)
+
+
 ### 🧭 Automation Framework Setup & Contribution Guide
 This guide is designed to help you **quickly set up, understand, and contribute** to the automation framework.
 
