@@ -36,18 +36,9 @@ To get the project running and review existing tests:
 3. **⚙️ Installation**  
    Install dependencies and Playwright browsers: 
 
-   ```
-   npm install
-   ```
-
 4. ▶️ Initial Run
-  
-     Execute the full end-to-end suite:
 
-        
-        npm run test:e2e
-        The current tests demonstrate interaction with public sites like Sauce Labs.
-        
+     Execute the full end-to-end suite:
 
 5. 🧾 Review Reports
 
@@ -85,9 +76,9 @@ Every new POM must be instantiated and exported here.
         };
 
 ## 🔧 Fixtures — baseTest.ts - ⚠️ Do not modify this file.
+Automatically injects the allPages manager, eliminating redundant imports in spec files.
+Provides immediate access to all POMs and utility classes.
 
-      Automatically injects the allPages manager, eliminating redundant imports in spec files.
-      Provides immediate access to all POMs and utility classes.
 
         // baseTest.ts
         import { test as base } from '@playwright/test';
@@ -244,6 +235,7 @@ Here’s an overview of the folder and file organization for this project:
         │ │ └── jsonplaceholder.spec.ts
         │ ├── 📁 auth
         │ │ └── product.spec.ts
+        │ └── 📁 local
         │ └── 📁 unauth
         │ └── userRoles.spec.ts
         ├── 📁 env
@@ -255,7 +247,7 @@ Here’s an overview of the folder and file organization for this project:
         │ ├── getFileStructure.ts
         │ ├── getImage.ts
         │ ├── global.auth.setup.spec.ts
-        │ ├── globalSetup.ts
+        │ ├── serverCheck.ts
         │ ├── networkDiscovery.ts
         │ └── serverHealth.ts
         ├── 📁 pages

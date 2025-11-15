@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 // ---------------------------------------------------
 
 const ENV = process.env.ENV || "qa";
-// Use join with __dirname to resolve the environment file path reliably
+// Env file path
 dotenv.config({ path: join(__dirname, `env/.env.${ENV}`) });
 
 const isCI = !!process.env.CI;
@@ -35,15 +35,12 @@ const commonUse = {
 };
 
 export default defineConfig({
-  // FIX: Replaced require.resolve() with join(__dirname, '...')
-  globalSetup: join(__dirname, "./helper/globalSetup"), // Ping Test
 
-  // Set root testDir to the project root, letting individual projects define their sub-dirs.
-  // This is cleaner when mixing e2e, api, and unit-tests.
+  globalSetup: join(__dirname, "./helper/serverCheck"), // Ping Test
+
+  // Root testDir to the project root
   testDir: "./",
   
-  // FIX: Ignore the unit-tests directory globally to prevent Vitest/Jest matchers conflict
-  // when running generic 'playwright test' without specifying projects.
   testIgnore: ["**/unit-tests/**"],
 
   fullyParallel: true,
@@ -57,7 +54,7 @@ export default defineConfig({
   },
 
   projects: [
-    // 0) Unit Tests Project - Defines path/config for unit tests (run via 'npm run test:unit')
+    // 0) Unit Tests Project - ('npm run test:unit')
     {
       name: "unit-tests",
       testDir: "./unit-tests",
