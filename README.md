@@ -228,8 +228,10 @@ Direct Playwright
 
 Here’s an overview of the folder and file organization for this project:
 
+        ├── 📁 .auth
         ├── 📁 data
         │ └── products.json
+        |
         ├── 📁 e2e
         │ ├── 📁 api
         │ │ └── jsonplaceholder.spec.ts
@@ -238,35 +240,48 @@ Here’s an overview of the folder and file organization for this project:
         │ └── 📁 local
         │ └── 📁 unauth
         │ └── userRoles.spec.ts
+        |
         ├── 📁 env
         │ └── .env.qa
         │ └── .env.dev
+        |
+        ├── 📁 functions
+        │ ├── allFunctions.ts
+        │ ├── Browser.ts
+        │ ├── Home.ts
+        │ ├── Login.ts
+        │ ├── Product.ts
+        │ └── Shop.ts
+        |
         ├── 📁 helper
         │ ├── dbconnect.ts
         │ ├── fixtures.ts
         │ ├── getFileStructure.ts
         │ ├── getImage.ts
         │ ├── global.auth.setup.spec.ts
-        │ ├── serverCheck.ts
         │ ├── networkDiscovery.ts
+        │ ├── serverCheck.ts
         │ └── serverHealth.ts
+        |
         ├── 📁 pages
         │ ├── allPages.ts
-        │ ├── browser.ts
-        │ ├── swagHome.ts
-        │ ├── swagLogin.ts
-        │ ├── swagProduct.ts
-        │ └── swagShop.ts
+        │ ├── Home.ts
+        │ ├── Login.ts
+        │ ├── Product.ts
+        │ └── Shop.ts
+        |
         ├── 📁 playwright-report
         ├── 📁 test-results
+        |
         ├── 📁 unit-tests
-        │ ├── allpages.test.ts
         │ ├── e2e.test.ts
         │ ├── filestructure.test.ts
         │ ├── fixtures.test.ts
         │ ├── globalauth.test.ts
+        │ ├── packagej.test.ts
         │ ├── pageobjectname.test.ts
         │ └── playwrightconfig.test.ts
+        |
         ├── 📄 README.md
         ├── 📄 generate-structure-log.js
         ├── 📄 package-lock.json
