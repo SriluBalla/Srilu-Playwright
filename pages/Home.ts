@@ -3,13 +3,13 @@ import { expect, type Locator, type Page } from "@playwright/test";
 
 export class PageHome {
   readonly page: Page;
-  readonly iCart: Locator;  
+  readonly iconCart: Locator;  
 
 
   constructor(page: Page) {
     this.page = page;
     
-    this.iCart = page.locator(".shopping-cart-link");
+    this.iconCart = page.locator(".shopping-cart-link");
     
   }
 }
