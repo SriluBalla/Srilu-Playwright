@@ -1,43 +1,61 @@
-// helper/fixturees.ts
-import { test as base, expect, type TestInfo } from '@playwright/test';
-import type { Page } from '@playwright/test';
-import { allPages } from '../pages/allPages';
+// helper/fixtures.ts
+import { test as base, expect, type TestInfo } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { allPages } from "../pages/allPages";
+import { allFunctions } from "../functions/allFunctions";
 
 type MyFixtures = {
   p: allPages;
+  f: allFunctions;
   testInfo: TestInfo;
   log: (msg: string) => Promise<void>;
 };
 
 export const test = base.extend<MyFixtures>({
-  p: [async ({ page, testInfo }, use) => {
-    const pages = new allPages(page, testInfo);
-    await use(pages);
-  }, { scope: 'test' }],
+  p: [
+    async ({ page, testInfo }, use) => {
+      const pages = new allPages(page, testInfo);
+      await use(pages);
+    },
+    { scope: "test" },
+  ],
 
-  testInfo: [async ({}, use, testInfo) => {
-    await use(testInfo);
-  }, { scope: 'test', auto: true }],
+  f: [
+    async ({ p, log }, use) => {
+      const functions = new allFunctions(p, log);
+      await use(functions);
+    },
+    { scope: "test", auto: true },
+  ],
 
-  // logger: creates a Playwright step AND attaches a run-log.txt at the end
-  log: [async ({}, use, testInfo) => {
-    const lines: string[] = [];
+  testInfo: [
+    async ({}, use, testInfo) => {
+      await use(testInfo);
+    },
+    { scope: "test", auto: true },
+  ],
 
-    const logger = async (msg: string) => {
-      console.log(msg);                 // shows in terminal
-      lines.push(msg);                  // saved for attachment
-      await base.step(msg, async () => {}); // shows as a Step in HTML report
-    };
+  log: [
+    async ({}, use, testInfo) => {
+      const lines: string[] = [];
 
-    await use(logger);
+      const logger = async (msg: string) => {
+        console.log(msg); 
+        lines.push(msg); 
+        await base.step(msg, async () => {}); 
+      };
 
-    if (lines.length) {
-      await testInfo.attach('run-log.txt', {
-        contentType: 'text/plain',
-        body: lines.join('\n'),
-      });
-    }
-  }, { scope: 'test' }],
+      await use(logger);
+
+      if (lines.length) {
+        await testInfo.attach("run-log.txt", {
+          contentType: "text/plain",
+          body: lines.join("\n"),
+        });
+      }
+    },
+    { scope: "test" },
+  ],
 });
 
 export { expect };

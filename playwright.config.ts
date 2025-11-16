@@ -114,5 +114,16 @@ export default defineConfig({
         baseURL: "https://jsonplaceholder.typicode.com",
       },
     },
+     // 5) Locally run tests for experimenting before finalizing
+    {
+      name: "local",
+      testDir: "./e2e",
+      testMatch: "/local/**/*.spec.ts",
+      testIgnore: ['./unit-tests/**', './helper/globalSetup.ts'],
+      use: {
+        ...commonUse,
+        ...devices["Desktop Chrome"],
+      },
+    },
   ],
 });

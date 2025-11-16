@@ -1,6 +1,7 @@
+// pages/Login
 import { expect, type Locator, type Page } from "@playwright/test";
 
-export class SwagLoginPage {
+export class PageLogin {
 
     readonly page: Page;
     readonly logoSwag: Locator;
@@ -20,20 +21,6 @@ export class SwagLoginPage {
 
         }
 
-        async login(user: string, pass: string){
-            await this.fUserName.fill(user);
-            await this.fPassword.fill(pass);
-            await this.btnLogin.click();
-        }
-
-        async wrongUser(errorTxt: string | RegExp){
-            await expect(this.errLoginMsg).toBeVisible();
-            const textError = await this.errLoginMsg.textContent();
-            textError === errorTxt;
-            expect(textError).toBe(errorTxt);
-
-            console.log('Message Actual = ' + textError);
-            console.log('Message Expected = ' + errorTxt);
-        }
+        
 
 }

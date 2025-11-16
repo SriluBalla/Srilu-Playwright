@@ -1,6 +1,7 @@
+// pages/Product
 import { expect, type Locator, type Page } from "@playwright/test";
 
-export class SwagProductPage {
+export class PageProduct {
   readonly page: Page;
   readonly btnBackToProducts: Locator;
   readonly txtProdTitle: Locator;
@@ -13,9 +14,4 @@ export class SwagProductPage {
     this.txtProdPrice = page.getByTestId("inventory-item-price");
   }
 
-  async loadsPageProduct() {
-    await expect(this.btnBackToProducts).toBeVisible({ timeout: 1000000 });
-
-    console.log("on Page Action Items");
-  }
 }

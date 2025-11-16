@@ -1,32 +1,25 @@
 // pages/allPages
-import { type Page, type TestInfo } from "@playwright/test"; 
+import { type Page, type TestInfo } from "@playwright/test";
 
-import { getImage } from "../helper/getImage";
-import { BrowserActions } from "../pages/browser";
-import { SwagLoginPage } from "../pages/swagLogin";
-import { SwagHomePage } from "../pages/swagHome";
-import { SwagShopPage } from "../pages/swagShop";
-import { SwagProductPage } from "../pages/swagProduct";
+import { PageLogin } from "./Login";
+import { PageHome } from "./Home";
+import { PageShop } from "./Shop";
+import { PageProduct } from "./Product";
 
 export class allPages {
   readonly page: Page;
-  readonly img: getImage;
-  readonly browser: BrowserActions;
   readonly testInfo: TestInfo;
-  readonly SwagLogin: SwagLoginPage;
-  readonly SwagHome: SwagHomePage;
-  readonly SwagShop: SwagShopPage;
-  readonly SwagProduct: SwagProductPage;
+  readonly Login: PageLogin;
+  readonly Home: PageHome;
+  readonly Shop: PageShop;
+  readonly Product: PageProduct;
 
-  // The constructor now accepts TestInfo
   constructor(page: Page, testInfo: TestInfo) {
     this.page = page;
-    this.img = new getImage(page, testInfo);
-    this.browser = new BrowserActions(page);
     this.testInfo = testInfo;
-    this.SwagLogin = new SwagLoginPage(page);
-    this.SwagHome = new SwagHomePage(page);
-    this.SwagShop = new SwagShopPage(page);
-    this.SwagProduct = new SwagProductPage(page);
+    this.Login = new PageLogin(page);
+    this.Home = new PageHome(page);
+    this.Shop = new PageShop(page);
+    this.Product = new PageProduct(page);
   }
 }
