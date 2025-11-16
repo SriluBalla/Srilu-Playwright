@@ -1,12 +1,13 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-echo "Running unit tests before pushing code..."
+echo "Running unit tests before commit..."
+npm run test:unit # This command runs your vitest tests
 
-Run the dedicated unit test script
-
-npm run test:unit
+# Check the exit status of the previous command
 if [ $? -ne 0 ]; then
-echo "Unit tests failed. Push aborted."
-exit 1
+  echo "Unit tests failed! Commit aborted."
+  exit 1 # Abort the commit if tests fail
 fi
+
+echo "Unit tests passed. Committing..."
