@@ -209,7 +209,7 @@ Direct Playwright
 
 # 🌿 Git Quick Reference
 
-        tree -L5 -I 'node_modules|dist|build|.git'
+         tree -L5 -I 'node_modules|dist|build|test-results|playwright-report|.git'
 
         git status
         git add .
