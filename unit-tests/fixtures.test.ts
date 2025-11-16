@@ -1,40 +1,54 @@
 import { describe, it, expect } from 'vitest';
 import * as fixtures from '../helper/fixtures';
 
-// Test 1: Check the core exports are present.
-describe('Framework Fixtures Core API Check', () => {
+// --- Setup ---
+type FixtureList<T extends {}> = {
+    [K in keyof T]: any; 
+};
+
+// --- Tests ---
+describe('Fixtures Tests', () => {
     it('should export the custom "test" object', () => {
         expect(fixtures.test).toBeDefined();
-        // Verify it is a Playwright extension object by checking a key property
         expect(typeof fixtures.test.extend).toBe('function');
     });
 
-    it('should export "expect"', () => {
+    it('"expect" exists', () => {
         expect(fixtures.expect).toBeDefined();
     });
 });
 
-// Test 2: Structural integrity check for dependencies.
-describe('Framework Fixtures Dependency Check', () => {
-    it('should ensure the allPages dependency is resolvable for the "p" fixture', async () => {
+describe('p, f, log, testInfo exist', () => {
+    
+    it('should define the mandatory custom fixtures: p, f, log', () => {
+        const expectedFixtures: FixtureList<fixtures.MyFixtures> = {
+            //If you change these in the fixtures file, please update here too
+            p: true, // allPages
+            f: true, // allFunctions
+            log: true, // logger
+            testInfo: true, // playwright built-in
+        };
+        
+        const fixtureKeys = Object.keys(expectedFixtures);
+        expect(fixtureKeys).toEqual(['p', 'f', 'log', 'testInfo']);
+    });
+
+    it('allPages and allFunctions dependencies are resolvable', async () => {
         try {
-            // Dynamically import the allPages module to ensure the path and export are correct.
             const allPagesModule = await import('../pages/allPages');
             expect(allPagesModule.allPages).toBeDefined();
+            
+            const allFunctionsModule = await import('../functions/allFunctions');
+            expect(allFunctionsModule.allFunctions).toBeDefined();
         } catch (e) {
-            console.error('CRITICAL ERROR: Cannot resolve "../pages/allPages". The "p" fixture (Page Objects) setup will fail.', e);
-            // If this fails, it indicates a broken link in the fixture setup.
+            console.error('CRITICAL ERROR: A core module (allPages or allFunctions) cannot be resolved or is missing an export.', e);
             expect(e).toBeUndefined(); 
         }
     });
 
-    // NOTE TO DEVELOPER: The integrity of the 'p' and 'log' fixture *logic* (their setup and teardown) 
-    // must be manually maintained due to the complexity of testing Playwright internals outside a runner.
-    it('should require intentional modification for the "p" and "log" fixtures', () => {
+    it('Instructions for developer', () => {
         const fixtureIntegrityReminder = 
-            'If this test fails, or if the "p" or "log" fixture logic is modified, ensure the core framework reporting and POM abstraction is maintained.';
-        
-        // This serves as documentation-as-test for the high-protection code.
+            'If this test fails, or if the "p" or "log" fixture logic is modified, ensure the core framework reporting, POM abstraction, and logging are maintained.';
         expect(fixtureIntegrityReminder).toBeDefined(); 
     });
 });

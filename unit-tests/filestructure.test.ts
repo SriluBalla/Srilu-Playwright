@@ -3,8 +3,6 @@ import { describe, it, expect } from "vitest";
 import { getFileStructure } from "../helper/getFileStructure";
 import path from "path";
 
-// IMPORTANT: We use path.resolve(process.cwd()) to ensure the root is the
-// directory where the test is run from (the Srilu-Playwright folder).
 const PROJECT_ROOT = path.resolve(process.cwd());
 
 // --- CANONICAL PROJECT STRUCTURE ---
@@ -52,21 +50,17 @@ const EXPECTED_STRUCTURE: string[] = [
   "unit-tests/filestructure.test.ts",
   "unit-tests/fixtures.test.ts",
   "unit-tests/globalauth.test.ts",
+  "unit-tests/packagej.test.ts",
   "unit-tests/pageobjectname.test.ts",
   "unit-tests/playwrightconfig.test.ts",
   "vitest.config.ts",
   "vitest.setup.js",
-].sort(); // Ensure the hardcoded list is sorted for a reliable comparison
+].sort();
 
-describe("Project File Structure Integrity Check", () => {
-  it("should match the canonical file structure exactly", () => {
-    // 1. Get the actual file structure from the disk
+describe("Project File Structure", () => {
+  it("Matches the canonical file structure", () => {
     const actualStructure = getFileStructure(PROJECT_ROOT, PROJECT_ROOT);
-
-    // 2. Perform comparison
     expect(actualStructure).toEqual(EXPECTED_STRUCTURE);
-
-    // Detailed check for easier debugging (useful if the array comparison fails)
     const missingFiles = EXPECTED_STRUCTURE.filter(
       (f) => !actualStructure.includes(f)
     );
