@@ -10,8 +10,8 @@
     "test:unauth": "playwright test --project unauthenticated",
     "test:api": "playwright test --project api-tests",
     "test:unit": "vitest",
-    "postinstall": "playwright install --with-deps"
-
+    "postinstall": "playwright install --with-deps",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,7 @@
     "@playwright/test": "^1.56.1",
     "@types/node": "^20.19.23",
     "dotenv": "^17.2.3",
-    "husky": "^9.0.11",
+    "husky": "^9.1.7",
     "vitest": "^4.0.6"
   }
 }
