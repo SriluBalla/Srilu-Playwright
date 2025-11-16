@@ -1,9 +1,28 @@
+# -------------------------------
+# Git Ignore Configuration
+# -------------------------------
+
+# -------------------------------
+# Node Files and Directories
+# --------------------------------
 node_modules/
+# ------------------------------------------
+# Test Results Specific Files and Directories
+# ------------------------------------------
 /test-results/*
 /playwright-report/
-/blob-report/
 /playwright/.cache/
+/blob-report/ 
+# ------------------------------------------
+# setup Specific Files and Directories
+# ------------------------------------------
 .auth/
 .github/
-.auth/*
-/helper/getFileStructure.ts
+.auth/
+# ------------------------------------------
+# Test files that need to be hidden
+# ------------------------------------------
+
+# ------------------------------------------
+# Data files that need to be hidden
+# ------------------------------------------

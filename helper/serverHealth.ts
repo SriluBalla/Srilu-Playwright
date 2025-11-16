@@ -9,7 +9,6 @@ export async function checkServerHealth(url: string, serverName: string) {
     });
 
     try {
-        // Simple GET request
         const response = await apiContext.get('/'); 
         
         if (response.status() === 200) {

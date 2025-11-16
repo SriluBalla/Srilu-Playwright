@@ -14,7 +14,7 @@ async function globalSetup() {
         'External API Server'
     );
 
-    // Add a check for the problematic 'Old Application' server if it's external
+    // Add a check for the problematic 'Application' server if it's external
     // const oldAppServerUp = await checkServerHealth('http://oldapp.example.com/health', 'Old Application Server');
 
 
