@@ -16,7 +16,7 @@ export class ProductFunctions {
 
   async loadsPageProduct() {
     await expect(this.Product.btnBackToProducts).toBeVisible({
-      timeout: 1000000,
+      timeout: 100,
     });
 
     await this.logger("on Page Products");

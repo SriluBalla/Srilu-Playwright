@@ -9,9 +9,9 @@ export class PageProduct {
 
   constructor(page: Page) {
     this.page = page;
-    this.btnBackToProducts = page.getByTestId("back-to-products");
-    this.txtProdTitle = page.getByTestId("inventory-item-name");
-    this.txtProdPrice = page.getByTestId("inventory-item-price");
+    this.btnBackToProducts = page.locator("#back-to-products");
+    this.txtProdTitle = page.locator('[data-test="inventory-item-name"]');
+    this.txtProdPrice = page.locator('[data-test="inventory-item-price"]');
   }
 
 }

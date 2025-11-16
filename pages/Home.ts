@@ -8,7 +8,8 @@ export class PageHome {
 
   constructor(page: Page) {
     this.page = page;
-    this.iCart = page.getByTestId(".shopping-cart-link");
+    
+    this.iCart = page.locator(".shopping-cart-link");
     
   }
 }

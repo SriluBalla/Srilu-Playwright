@@ -1,32 +1,35 @@
 import { test, expect } from "../../helper/fixtures";
-import productsData from "../../data/products.json" assert { type: "json" };
+import productsData from "../../data/products.json" assert { type: "json" }; 
 
-test.describe("Product Page", () => {
-  test("Go to product page => Title and price match", async ({
-    page,
-    p,
-    f,
-    log,
-  }) => {
-    await page.goto("/inventory.html");
-    await f.Shop.loadsPageShop();
+interface Product {
+  name: string;
+  price: number;
+}
+const products: Product[] = productsData.products;
 
-    for (const product of productsData.products) {
-      const { name, price } = product;
+test.describe("🛒 Product and Price (Data-Driven)", () => {
+  
+  products.forEach((product) => {
+    const { name, price } = product;
+
+    test(`🔍 Product exists with price: "${name}"`, async ({ p, f, log }) => {
+      
+      await log(`Starting verification for price: $${price}`);
+      await f.Browser.winSizeMax();
+      await f.Browser.winGoToURL('/inventory.html'); 
+      await f.Shop.loadsPageShop();
+
       await f.Shop.clickProduct(name);
 
-      await expect(p.Product.txtProdTitle).toBeVisible({ timeout: 1000 });
-      await expect(p.Product.txtProdPrice).toBeVisible({ timeout: 1000 });
+      await expect(p.Product.txtProdTitle).toBeVisible();
+      await expect(p.Product.txtProdPrice).toBeVisible();
 
-      await f.img.wholePage(name);
       await expect(p.Product.txtProdTitle).toHaveText(name);
       await expect(p.Product.txtProdPrice).toHaveText(`$${price}`);
-      await log(`🛍️ Product page for "${name}" matches = title and price`);
-
+      await log(`✅ Title and price matched: "${name}" at $${price}`);
+      
+      await f.img.wholePage(`Product_Details_${name.replace(/\s/g, '_')}`); 
       await p.Product.btnBackToProducts.click();
-      await f.Shop.loadsPageShop();
-    }
-
-    await log("Completed verification of all products");
+    });
   });
 });

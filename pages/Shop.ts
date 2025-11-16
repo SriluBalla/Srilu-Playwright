@@ -8,13 +8,12 @@ export class PageShop {
 
   constructor(page: Page) {
     this.page = page;
-    this.hProducts = page.getByTestId("product-sort-container");
-    this.btnMenu = page.locator('#menu_button_container')
+    this.hProducts = page.locator('[data-test="product-sort-container"]');
+    this.btnMenu = page.locator('#react-burger-menu-btn')
   }
 
   product(name: string): Locator {
-    return this.page
-      .getByTestId("inventory-item-name")
+    return this.page.locator('[data-test="inventory-item-name"]')
       .filter({ hasText: name });
   }
 

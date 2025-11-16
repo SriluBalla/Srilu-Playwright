@@ -1,5 +1,5 @@
 // functions/Shop
-import { expect , type Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import { PageShop } from "../pages/Shop";
 type Logger = (msg: string) => Promise<void>;
 
@@ -15,10 +15,10 @@ export class ShopFunctions {
   }
 
   async loadsPageShop() {
+    await this.page.waitForURL("**/inventory.html", { timeout: 100 });
     await expect(this.Shop.btnMenu).toBeVisible({ timeout: 1000 });
-    await this.page.waitForURL("**/inventory.html", { timeout: 10000 });
     await this.logger("on Page Swag Products Inventory");
-    await expect(this.Shop.hProducts).toBeVisible({ timeout: 100000 });
+    await expect(this.Shop.hProducts).toBeVisible({ timeout: 100 });
   }
 
   async clickProduct(name: string) {

@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto(process.env.URL!);
 });
 
-test.describe("Login with various user types", () => {
+test.describe("RBAC", () => {
   test("Empty fields --> Error message", async ({ p, f, log }) => {
     await log("NoUser");
     await p.Login.logoSwag.isVisible();
