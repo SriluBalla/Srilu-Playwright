@@ -298,6 +298,7 @@ Here’s an overview of the folder and file organization for this project:
 - **`e2e/`** – End-to-end test specifications, organized by test type: `api`, `auth`, and `unauth`.  
 - **`env/`** – Environment variable files for different environments.  
 - **`helper/`** – Helper scripts and global setups for authentication, DB connection, and network/server checks.  
+- **`functions/`** – Functions / Action steps used by tests.  
 - **`pages/`** – Page Object Models (POMs) used by tests.  
 - **`playwright-report/`** – Generated HTML test reports.  
 - **`test-results/`** – Raw test outputs and error contexts.  
