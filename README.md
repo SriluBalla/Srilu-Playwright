@@ -1,5 +1,6 @@
 # 🛡️ Srilu-Playwright E2E
 
+### 🎥 🎬 🎞️ https://www.youtube.com/watch?v=6E7a6XmMgu0  🍿
 
 [🚀 Getting Started](https://github.com/SriluBalla/Srilu-Playwright?tab=readme-ov-file#%EF%B8%8F-srilu-playwright-e2e)
 
