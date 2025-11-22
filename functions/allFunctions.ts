@@ -2,9 +2,9 @@
 import { allPages } from "../pages/allPages";
 import { BrowserActions } from "./Browser";
 import { getImage } from "../helper/getImage";
-import { LoginFunctions } from "./Login";
-import { ShopFunctions } from "./Shop";
-import { ProductFunctions } from "./Product";
+import { LoginFunctions } from "./fLogin";
+import { ShopFunctions } from "./fShop";
+import { ProductFunctions } from "./fProduct";
 
 type Logger = (msg: string) => Promise<void>;
 

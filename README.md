@@ -249,10 +249,10 @@ Here’s an overview of the folder and file organization for this project:
         ├── 📁 functions
         │ ├── allFunctions.ts
         │ ├── Browser.ts
-        │ ├── Home.ts
-        │ ├── Login.ts
-        │ ├── Product.ts
-        │ └── Shop.ts
+        │ ├── fHome.ts
+        │ ├── fLogin.ts
+        │ ├── fProduct.ts
+        │ └── fShop.ts
         |
         ├── 📁 helper
         │ ├── dbconnect.ts
@@ -266,10 +266,10 @@ Here’s an overview of the folder and file organization for this project:
         |
         ├── 📁 pages
         │ ├── allPages.ts
-        │ ├── Home.ts
-        │ ├── Login.ts
-        │ ├── Product.ts
-        │ └── Shop.ts
+        │ ├── pHome.ts
+        │ ├── pLogin.ts
+        │ ├── pProduct.ts
+        │ └── pShop.ts
         |
         ├── 📁 playwright-report
         ├── 📁 test-results

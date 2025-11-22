@@ -1,10 +1,10 @@
 // pages/allPages
 import { type Page, type TestInfo } from "@playwright/test";
 
-import { PageLogin } from "./Login";
-import { PageHome } from "./Home";
-import { PageShop } from "./Shop";
-import { PageProduct } from "./Product";
+import { PageLogin } from "./pLogin";
+import { PageHome } from "./pHome";
+import { PageShop } from "./pShop";
+import { PageProduct } from "./pProduct";
 
 export class allPages {
   readonly page: Page;

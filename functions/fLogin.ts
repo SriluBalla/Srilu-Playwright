@@ -1,6 +1,6 @@
 // functions/Login
 import { expect, type Page } from "@playwright/test";
-import { PageLogin } from "../pages/Login";
+import { PageLogin } from "../pages/pLogin";
 type Logger = (msg: string) => Promise<void>;
 
 export class LoginFunctions {
