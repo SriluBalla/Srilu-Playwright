@@ -86,7 +86,25 @@ export class BrowserActions {
     await this.logger("📲 Mobile size 414x896 applied");
   }
 
+   // ---- Network calls ----
+  async winNetworkCallsRequest() {
+    this.page.on('request', request => {
+      this.logger('Request: ' + request.url());
+    });
+  }
+
+  async winNetworkCallsResponse() {
+    this.page.on('response', response => {
+      this.logger('Response: ' + response.url() + ' ' + response.status());
+    });
+  }
+
   // ---- COOKIES ----
+   async winCookieGetAll() {
+    const cookies = await this.context.cookies();
+    await this.logger('Cookies: ' + JSON.stringify(cookies));
+  }
+  
   async winCookieAdd(name: string, value: string, domain: string) {
     await this.context.addCookies([
       { name, value, domain, path: "/", httpOnly: false, secure: false },

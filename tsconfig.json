@@ -8,5 +8,5 @@
     "skipLibCheck": true,
     "types": ["vitest/globals"]  },
     
-  "include": ["e2e", "pages", "helper", "config", "playwright.config.ts", "functions/Browser.ts", "functions/Product copy.ts", "functions/Shop copy.ts"]
+  "include": ["e2e", "pages", "helper", "config", "playwright.config.ts", "functions/fBrowser.ts", "functions/Product copy.ts", "functions/Shop copy.ts"]
 }

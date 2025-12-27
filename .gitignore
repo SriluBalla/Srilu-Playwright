@@ -26,3 +26,5 @@ node_modules/
 # ------------------------------------------
 # Data files that need to be hidden
 # ------------------------------------------
+functions/fComparePages.ts
+e2e/local/*
