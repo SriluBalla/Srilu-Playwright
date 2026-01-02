@@ -1,23 +1,26 @@
 // functions/Product
 import { expect, type Locator, type Page } from "@playwright/test";
-import { PageProduct } from "../pages/Product";
+import { PageProduct } from "../pages/pProduct";
+import { ElementHelper } from "./fElement";
+import { BrowserActions } from "./fBrowser";
 type Logger = (msg: string) => Promise<void>;
 
 export class ProductFunctions {
-  private readonly Product: PageProduct;
   private logger: Logger;
-  readonly page: Page;
+  private page: Page;
+  private readonly Product: PageProduct;
+  private readonly el: ElementHelper;
+  private readonly browser: BrowserActions;
 
   constructor(Product: PageProduct, page: Page, logger: Logger) {
-    this.Product = Product;
     this.logger = logger;
-    this.page = page;
+    this.Product = Product;
+    this.el = new ElementHelper(logger);
+    this.browser = new BrowserActions(page, logger);
   }
 
   async loadsPageProduct() {
-    await expect(this.Product.btnBackToProducts).toBeVisible({
-      timeout: 100,
-    });
+    await this.el.waitForElemVisible(this.Product.btnBackToProducts, 'button Back To Products');
 
     await this.logger("on Page Products");
   }

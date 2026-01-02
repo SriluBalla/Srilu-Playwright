@@ -1,33 +1,57 @@
-// functions/Login
-import { expect, type Page } from "@playwright/test";
+import { type Page } from "@playwright/test";
 import { PageLogin } from "../pages/pLogin";
-type Logger = (msg: string) => Promise<void>;
+import { ElementHelper } from "./fElement";
+import { BrowserActions } from "./fBrowser";
+
+type Logger = (msg: string) => Promise<void> | void;
 
 export class LoginFunctions {
-  private readonly Login: PageLogin;
+  private readonly page: Page;
   private logger: Logger;
-  readonly page: Page;
+  private readonly loginPage: PageLogin;
+  private readonly el: ElementHelper;
+  private readonly browser: BrowserActions;
+  
 
-  constructor(Login: PageLogin, page: Page,  logger: Logger) {
-    this.Login = Login;
+  constructor(
+    loginPage: PageLogin, 
+    el: ElementHelper, 
+    browser: BrowserActions, 
+    logger: Logger, 
+    page: Page
+  ) {
+    this.loginPage = loginPage;
+    this.el = el;
+    this.browser = browser;
     this.logger = logger;
-    this.page = page;
+        this.page = page;
+    
   }
 
+  /**
+   * Performs the login flow using wrapped element interactions
+   */
   async login(user: string, pass: string) {
-    await this.Login.fUserName.fill(user);
-    await this.Login.fPassword.fill(pass);
-    await this.Login.btnLogin.click();
+    await this.el.typeInField(this.loginPage.fUserName, "field Username", user);
+    await this.el.typeInField(this.loginPage.fPassword, "field Password", pass);
+    await this.el.clickElem(this.loginPage.btnLogin, "button Login");
   }
 
+  /**
+   * Verifies error messages for failed login attempts (e.g., Supabase "Invalid login credentials")
+   */
   async wrongUser(errorTxt: string | RegExp) {
-    await expect(this.Login.errLoginMsg).toBeVisible();
-    await expect(this.Login.errLoginMsg).toHaveText(errorTxt);
-    const textError = await this.Login.errLoginMsg.textContent();
-    textError === errorTxt;
-    expect(textError).toBe(errorTxt);
+    // 1. Verify visibility using wrapped helper
+    await this.el.elemVisible(this.loginPage.errLoginMsg, "Login Error Message");
 
-    await this.logger("Message Actual = " + textError);
-    await this.logger("Message Expected = " + errorTxt);
+    // 2. Verify text exists
+    await this.el.textExists(this.loginPage.errLoginMsg, "Error Message Text", errorTxt);
+
+    // 3. Use Safe helper to get the text for logging purposes
+    const actualText = await this.el.getTextSafe(this.loginPage.errLoginMsg, "Error Message");
+
+    if (this.logger) {
+        await this.logger(`📊 Comparison: Expected [${errorTxt}] | Actual [${actualText}]`);
+    }
   }
 }

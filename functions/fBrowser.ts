@@ -1,186 +1,295 @@
-// functions/browser.ts 
-import { Page, BrowserContext, expect, Locator } from "@playwright/test";
+import { Page, BrowserContext, Locator, expect } from "@playwright/test";
+import { ElementHelper } from "./fElement";
 
-type Logger = (msg: string) => Promise<void>;
+export type Logger = (msg: string) => Promise<void> | void;
 
 export class BrowserActions {
-  private page: Page;
-  private context: BrowserContext;
-  private logger: Logger; 
+    private context: BrowserContext;
 
-  constructor(page: Page, logger: Logger) {
-    this.page = page;
-    this.context = page.context();
-    this.logger = logger; 
-  }
-
-  // ---- NAVIGATION & VERIFICATION ----
-  async winGoToURL(url: string) {
-    await this.page.goto(url);
-    await this.logger(`🌍 Navigated to: ${url}`); 
-  }
-
-  async winGetCurrentURL(): Promise<string> {
-    const currentUrl = this.page.url();
-    await this.logger(`🔗 Current URL is: ${currentUrl}`); 
-    return currentUrl;
-  }
-
-  async winGoBack() {
-    await this.page.goBack();
-    await this.logger("🔙 Navigated back one page."); 
-  }
-
-  async winGoForward() {
-    await this.page.goForward();
-    await this.logger("➡️ Navigated forward one page."); 
-  }
-  
-  async winRefresh() {
-    await this.page.reload();
-    await this.logger("🔄 Page refreshed.");
-  }
-
-  async winVerifyTitle(title: string) {
-    await expect(this.page).toHaveTitle(/.*${title}.*/, {
-      timeout: 5000,
-    });
-    await this.logger(`✅ Title verified to contain: '${title}'`);
-  }
-
-  async winWait(ms: number) {
-    await this.page.waitForTimeout(ms);
-    await this.logger(`⏳ Waited for ${ms}ms.`);
-  }
-
-  // ---- WINDOW / VIEWPORT SIZES ----
-  async winSizeMax() {
-    try {
-      const session = await this.context.newCDPSession(this.page);
-      const { windowId } = await session.send("Browser.getWindowForTarget");
-      await session.send("Browser.setWindowBounds", {
-        windowId,
-        bounds: { windowState: "maximized" },
-      });
-      await this.logger("✅ Browser window maximized");
-    } catch (err) {
-      await this.logger( 
-        "⚠️ Maximize not supported for this browser. Falling back to desktop viewport."
-      );
-      await this.winSizeDesktop();
+    constructor(private page: Page, private logger?: Logger) {
+        this.context = page.context();
     }
-  }
 
-  async winSizeDesktop() {
-    await this.page.setViewportSize({ width: 1920, height: 1080 });
-    await this.logger("🖥️ Desktop size 1920x1080 applied");
-  }
-
-  async winSizeTablet() {
-    await this.page.setViewportSize({ width: 1024, height: 768 });
-    await this.logger("📱 Tablet size 1024x768 applied");
-  }
-
-  async winSizeMobile() {
-    await this.page.setViewportSize({ width: 414, height: 896 }); 
-    await this.logger("📲 Mobile size 414x896 applied");
-  }
-
-   // ---- Network calls ----
-  async winNetworkCallsRequest() {
-    this.page.on('request', request => {
-      this.logger('Request: ' + request.url());
-    });
-  }
-
-  async winNetworkCallsResponse() {
-    this.page.on('response', response => {
-      this.logger('Response: ' + response.url() + ' ' + response.status());
-    });
-  }
-
-  // ---- COOKIES ----
-   async winCookieGetAll() {
-    const cookies = await this.context.cookies();
-    await this.logger('Cookies: ' + JSON.stringify(cookies));
-  }
-  
-  async winCookieAdd(name: string, value: string, domain: string) {
-    await this.context.addCookies([
-      { name, value, domain, path: "/", httpOnly: false, secure: false },
-    ]);
-    await this.logger(`🍪 Cookie added: ${name}=${value} for ${domain}`);
-  }
-
-  async winCookieRemove(name: string, domain: string) {
-    const cookies = await this.context.cookies();
-    const keep = cookies.filter(
-      (c) => !(c.name === name && c.domain === domain)
-    );
-    await this.context.clearCookies();
-    await this.context.addCookies(keep);
-    await this.logger(`🧹 Cookie removed: ${name} for ${domain}`);
-  }
-
-  async winCookieDeleteAll() {
-    await this.context.clearCookies();
-    await this.logger("🗑️ All cookies deleted from context.");
-  }
-
-  // ---- TABS ----
-  async winNewTab(url?: string) {
-    const newPage = await this.context.newPage();
-    if (url) await newPage.goto(url);
-    await this.logger(`🆕 New tab opened${url ? ` → ${url}` : ""}`);
-    return newPage;
-  }
-
-  async winSwitchTab(index: number) {
-    const pages = this.context.pages();
-    if (index < 0 || index >= pages.length) {
-      throw new Error(
-        `❌ Invalid tab index ${index}. Open tabs: ${pages.length}`
-      );
+    /**
+     * PRIVATE HELPER: Centralized Error Handling
+     */
+    private async wrap<T>(
+        action: () => Promise<T>,
+        successMsg: string,
+        failMsg: string
+    ): Promise<T> {
+        try {
+            const result = await action();
+            if (this.logger) await this.logger(successMsg);
+            return result;
+        } catch (error: any) {
+            const detailedError = `${failMsg}\nReason: ${error.message}`;
+            if (this.logger) await this.logger(detailedError);
+            throw new Error(detailedError);
+        }
     }
-    const target = pages[index];
-    await target.bringToFront();
-    await this.logger(`🔀 Switched to tab #${index + 1}`);
-    return target;
-  }
 
-  async winCloseTabs(keepFirst = true) {
-    const pages = this.context.pages();
-    const start = keepFirst ? 1 : 0;
-    for (let i = start; i < pages.length; i++) {
-      await pages[i].close();
+    // ==========================================================
+    // 🌍 NAVIGATION & URL
+    // ==========================================================
+    async goToURL(url: string) {
+        await this.wrap(
+            async () => await this.page.goto(url),
+            `🌍 Navigated to: ${url}`,
+            `❌ Failed to navigate to ${url}`
+        );
     }
-    await this.logger(
-      keepFirst
-        ? "🚪 Closed all extra tabs (kept first)."
-        : "🚪 Closed all tabs."
-    );
-  }
 
-  // ---- INTERACTIONS (Hover/Scroll/Files) ----
-  async winHover(selector: string) {
-    await this.page.hover(selector);
-    await this.logger(`👆 Hovered over element: ${selector}`);
-  }
+    async getCurrentURL(): Promise<string> {
+        const url = this.page.url();
+        if (this.logger) await this.logger(`🔗 Current URL: ${url}`);
+        return url;
+    }
 
-  async winScrollBy(yDistance: number) {
-    await this.page.evaluate((y) => window.scrollBy(0, y), yDistance);
-    await this.logger(`⬇️ Scrolled page by ${yDistance} pixels.`);
-  }
+    async refresh() {
+        await this.wrap(
+            async () => await this.page.reload(),
+            "🔄 Page refreshed",
+            "❌ Failed to refresh page"
+        );
+    }
 
-  async winScrollToElement(selector: string) {
-    await this.page.locator(selector).scrollIntoViewIfNeeded();
-    await this.logger(`⬇️ Scrolled element into view: ${selector}`);
-  }
+    async goBack() {
+        await this.page.goBack();
+        if (this.logger) await this.logger("⬅️ Navigated Back");
+    }
 
-  async winUploadFile(selector: string, filePath: string) {
-    await this.page.locator(selector).setInputFiles(filePath);
-    await this.logger(
-      `📂 File uploaded successfully to ${selector} from ${filePath}`
-    );
-  }
+    // ==========================================================
+    // 🧠 WAITING & STATE
+    // ==========================================================
+    async verifyTitle(title: string) {
+        await this.wrap(
+            async () => await expect(this.page).toHaveTitle(new RegExp(title), { timeout: 5000 }),
+            `✅ Title verified: contains '${title}'`,
+            `❌ Title mismatch. Expected '${title}'`
+        );
+    }
+
+    async waitForNetworkIdle(timeout = 5000) {
+        await this.wrap(
+            async () => await this.page.waitForLoadState('networkidle', { timeout }),
+            "🧠 Network is idle (Page loaded)",
+            "⚠️ Network did not become idle (Background calls still running)"
+        );
+    }
+
+    async hardWait(ms: number) {
+        await this.page.waitForTimeout(ms);
+        if (this.logger) await this.logger(`⏳ Hard wait for ${ms}ms`);
+    }
+
+    // ==========================================================
+    // 🖥️ WINDOW & VIEWPORT
+    // ==========================================================
+    async sizeMax() {
+        try {
+            const session = await this.context.newCDPSession(this.page);
+            const { windowId } = await session.send("Browser.getWindowForTarget");
+            await session.send("Browser.setWindowBounds", {
+                windowId,
+                bounds: { windowState: "maximized" },
+            });
+            if (this.logger) await this.logger("✅ Browser window maximized");
+        } catch (err) {
+            if (this.logger) await this.logger("⚠️ Maximize not supported. Falling back to desktop size.");
+            await this.sizeDesktop();
+        }
+    }
+
+    async sizeDesktop() {
+        await this.page.setViewportSize({ width: 1920, height: 1080 });
+        if (this.logger) await this.logger("🖥️ Viewport: Desktop (1920x1080)");
+    }
+
+    // ==========================================================
+    // 📂 TABS & POPUPS
+    // ==========================================================
+    async newTab(url?: string) {
+        const newPage = await this.context.newPage();
+        if (url) await newPage.goto(url);
+        if (this.logger) await this.logger(`🆕 New tab opened ${url ? `-> ${url}` : ''}`);
+        return newPage;
+    }
+
+    /**
+     * Clicks a locator and waits for the new tab to open.
+     */
+    async expectNewTab(trigger: Locator, name: string): Promise<Page> {
+        return await this.wrap(
+            async () => {
+                const [newPage] = await Promise.all([
+                    this.context.waitForEvent('page'),
+                    trigger.click()
+                ]);
+                await newPage.waitForLoadState();
+                return newPage;
+            },
+            `📑 ${name} successfully opened a new tab`,
+            `❌ ${name} did NOT open a new tab`
+        );
+    }
+
+    async closeTabs(keepFirst = true) {
+        const pages = this.context.pages();
+        const start = keepFirst ? 1 : 0;
+        for (let i = start; i < pages.length; i++) {
+            await pages[i].close();
+        }
+        if (this.logger) await this.logger(keepFirst ? "🚪 Closed extra tabs" : "🚪 Closed all tabs");
+    }
+
+    // ==========================================================
+    // 🍪 STORAGE & COOKIES
+    // ==========================================================
+    async localStorageSet(key: string, value: string) {
+        await this.page.evaluate(({ k, v }) => localStorage.setItem(k, v), { k: key, v: value });
+        if (this.logger) await this.logger(`💾 LocalStorage set: ${key}=${value}`);
+    }
+
+    async localStorageClear() {
+        await this.page.evaluate(() => localStorage.clear());
+        if (this.logger) await this.logger("🧹 LocalStorage cleared");
+    }
+
+    async cookieAdd(name: string, value: string, domain: string) {
+        await this.context.addCookies([{ name, value, domain, path: "/", httpOnly: false, secure: false }]);
+        if (this.logger) await this.logger(`🍪 Cookie added: ${name}`);
+    }
+
+    async cookieDeleteAll() {
+        await this.context.clearCookies();
+        if (this.logger) await this.logger("🗑️ All cookies deleted");
+    }
+
+    async getAllCookies() {
+        return await this.wrap(
+            async () => await this.page.context().cookies(),
+            "🍪 Snapshot: All browser cookies retrieved",
+            "⚠️ Failed to capture cookies"
+        );
+    }
+
+    // ==========================================================
+    // 🛠️ DEBUGGING & SYSTEM
+    // ==========================================================
+    async takeScreenshot(name: string) {
+        const path = `./screenshots/${name}_${Date.now()}.png`;
+        await this.wrap(
+            async () => await this.page.screenshot({ path, fullPage: true }),
+            `📸 Screenshot saved: ${path}`,
+            `❌ Failed to take screenshot`
+        );
+    }
+
+    async handleDialog(action: 'accept' | 'dismiss' = 'accept') {
+        this.page.once('dialog', async dialog => {
+            const msg = dialog.message();
+            if (action === 'accept') await dialog.accept();
+            else await dialog.dismiss();
+            if (this.logger) await this.logger(`💬 Dialog handled (${action}): "${msg}"`);
+        });
+    }
+
+    async getClipboardText(): Promise<string> {
+        return await this.wrap(
+            async () => await this.page.evaluate(() => navigator.clipboard.readText()),
+            `📋 Read text from clipboard`,
+            `❌ Failed to read clipboard`
+        );
+    }
+
+    // ==========================================================
+    // 🖱️ PAGE INTERACTIONS
+    // ==========================================================
+    async scrollBy(yDistance: number) {
+        await this.page.evaluate((y) => window.scrollBy(0, y), yDistance);
+        if (this.logger) await this.logger(`⬇️ Scrolled by ${yDistance}px`);
+    }
+
+    async uploadFile(selector: string, filePath: string) {
+        await this.wrap(
+            async () => await this.page.locator(selector).setInputFiles(filePath),
+            `📂 Uploaded file: ${filePath}`,
+            `❌ Failed to upload file`
+        );
+    }
+
+    // ==========================================================
+    // 🧠 Network Call
+    // ==========================================================
+
+    async getNetworkRequest(urlFilter: string | RegExp) {
+        return await this.wrap(
+            async () => {
+                const requests: any[] = [];
+                this.page.on('request', (request) => {
+                    if (request.url().match(urlFilter)) {
+                        requests.push({
+                            url: request.url(),
+                            method: request.method(),
+                            headers: request.headers(),
+                            postData: request.postDataJSON(),
+                        });
+                    }
+                });
+                return requests;
+            },
+            `🔍 Monitoring outgoing requests matching: ${urlFilter}`,
+            `⚠️ Failed to attach request listener`
+        );
+    }
+
+    async getAllNetworkRequests() {
+        const requests: any[] = [];
+        // Attach listener
+        this.page.on('request', (req) => {
+            requests.push({
+                url: req.url(),
+                method: req.method(),
+                headers: req.headers(),
+                payload: req.postData()
+            });
+        });
+        return requests; // This returns a reference to the array that will fill up
+    }
+
+    async getNetworkResponse(urlFilter: string | RegExp) {
+        return await this.wrap(
+            async () => {
+                const responses: any[] = [];
+                this.page.on('response', async (response) => {
+                    if (response.url().match(urlFilter)) {
+                        responses.push({
+                            url: response.url(),
+                            status: response.status(),
+                            headers: response.headers(),
+                            body: await response.json().catch(() => ({})),
+                        });
+                    }
+                });
+                return responses;
+            },
+            `📥 Monitoring incoming responses matching: ${urlFilter}`,
+            `⚠️ Failed to attach response listener`
+        );
+    }
+
+    async getAllNetworkResponses() {
+        const responses: any[] = [];
+        this.page.on('response', async (res) => {
+            responses.push({
+                url: res.url(),
+                status: res.status(),
+                headers: res.headers(),
+                // Body is excluded here to avoid crashes on large binary files (images/fonts)
+                // but can be fetched if needed
+            });
+        });
+        return responses;
+    }
 }

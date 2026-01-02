@@ -15,21 +15,25 @@ test.describe("🛒 Product and Price (Data-Driven)", () => {
     test(`🔍 Product exists with price: "${name}"`, async ({ p, f, log }) => {
       
       await log(`Starting verification for price: $${price}`);
-      await f.Browser.winSizeMax();
-      await f.Browser.winGoToURL('/inventory.html'); 
+      
+      await f.Browser.sizeDesktop();
+      await f.Browser.goToURL('/inventory.html'); 
+      
       await f.Shop.loadsPageShop();
-
       await f.Shop.clickProduct(name);
 
-      await expect(p.Product.txtProdTitle).toBeVisible();
-      await expect(p.Product.txtProdPrice).toBeVisible();
+      await f.Element.waitForElemVisible(p.Product.txtProdTitle, 'Product Title');
+      await f.Element.waitForElemVisible(p.Product.txtProdPrice, 'Product Price');
+      await f.Element.waitForElemVisible(p.Product.btnBackToProducts, 'button Back To Products');
 
-      await expect(p.Product.txtProdTitle).toHaveText(name);
-      await expect(p.Product.txtProdPrice).toHaveText(`$${price}`);
+      await f.Element.textExists(p.Product.txtProdTitle, 'Product Title', name);
+      await f.Element.textExists(p.Product.txtProdPrice, 'Product Price', `$${price}`);
+      
       await log(`✅ Title and price matched: "${name}" at $${price}`);
       
       await f.img.wholePage(`Product_Details_${name.replace(/\s/g, '_')}`); 
-      await p.Product.btnBackToProducts.click();
+      
+      await f.Element.clickElem(p.Product.btnBackToProducts, 'button Back To Products');
     });
   });
 });
