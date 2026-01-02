@@ -25,7 +25,7 @@ const EXPECTED_STRUCTURE: string[] = [
   "functions",
   "functions/fBrowser.ts",
   "functions/fComparePages.ts",
-  "functions/fElementHelper.ts",
+  "functions/fElement.ts",
   "functions/fLogin.ts",
   "functions/fProduct.ts",
   "functions/fShop.ts",

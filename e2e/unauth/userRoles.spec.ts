@@ -5,7 +5,7 @@ test.beforeEach(async ({ f }) => {
 });
 
 test.describe("RBAC", () => {
-  test.only("Empty fields --> Error message", async ({ p, f, log }) => {
+  test("Empty fields --> Error message", async ({ p, f, log }) => {
     await log("Login with no user = No Credentials");
     await f.Element.waitForElemVisible(p.Login.btnLogin, 'button Login');
     await f.Login.login("", "");
